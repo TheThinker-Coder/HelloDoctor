@@ -1,0 +1,12 @@
+package com.hellodoctor.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.hellodoctor.entities.HospitalsDetails;
+
+public interface HospitalsDetailsRepository extends JpaRepository<HospitalsDetails, Long> {
+	public List<HospitalsDetails>findByhospitalName(String hospitalName);
+
+}
