@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hellodoctor.entities.Patient;
 import com.hellodoctor.requestdto.PatientRequestDto;
 import com.hellodoctor.responsedto.PatientResponseDto;
 import com.hellodoctor.services.PatientService;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @RestController
 @RequestMapping("/patient")
 public class PatientController {
@@ -29,37 +30,42 @@ public class PatientController {
 	
 	@PostMapping("/register")
 	public PatientResponseDto savePatient(@RequestBody PatientRequestDto patientRequestDto) {
-		
+		log.info("controller savePatient method");
 		return patientService.savePatient(patientRequestDto);
 		
 	}
 	
 	@GetMapping("/getAllPatient")
-	public List<Patient> getAllPatient(){
+	public List<PatientResponseDto> getAllPatient(){
+		
+		log.info("controller getAllPatient method");
 		return patientService.getAllPatient();
 		
 	}
 	
 	@GetMapping("/getPatientById/{patientId}")
-	public PatientResponseDto getPatientById(@PathVariable("patientId") long patientId){
-		
+	public PatientResponseDto getPatientById(@PathVariable("patientId") Long patientId){
+		log.info("controller getPatientById");
 		return patientService.getPatientById(patientId);
 	}
 	
 	@GetMapping("/getPatientByEmail/{patientEmail}")
 	public PatientResponseDto getPatientByEmail(@PathVariable("patientEmail") String patientEmail) {
-		return patientService.getPatientByEmail(patientEmail);
+		log.info("controller getPatientByEmail");
+		return patientService.getPatientByPatientEmail(patientEmail);
 		
 	}
 	
 	
 	@PutMapping("/updatePatient/{patientId}")
-	public Patient updatePatient(@RequestBody PatientRequestDto patientRequestDto, @PathVariable("patientId") long patientId) {
+	public PatientResponseDto updatePatient(@RequestBody PatientRequestDto patientRequestDto, @PathVariable("patientId") long patientId) {
+		log.info("controller updatePatient");
 		return patientService.updatePatient(patientId, patientRequestDto);	
 	}
 	
 	@DeleteMapping("/deletePatientById/{patientId}")
-		public ResponseEntity<?> deletePatientById(@PathVariable("patientId") long patientId) {
+		public ResponseEntity<?> deletePatientById(@PathVariable("patientId") Long patientId) {
+		log.info("controller deletePatientById");
 		patientService.deletePatientById(patientId);
 		return new ResponseEntity<>("this patient id deleted  "+patientId,HttpStatus.OK);
 	}
