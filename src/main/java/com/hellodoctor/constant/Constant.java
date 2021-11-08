@@ -2,7 +2,7 @@ package com.hellodoctor.constant;
 
 public class Constant {
 	public static final String DOCTORROLE = "doctor";
-	public static final String PATIENTROLE = "PATIENT";
+	public static final String PATIENTROLE = "ROLE_PATIENT";
 	public static final String EXCEPTION613 = "Something Went Wrong";
 	public static final String WELCOME = "Welcome To Hello Doctor";
 	public static final String EXCEPTION602 = "Given Information Is Not Valid";
