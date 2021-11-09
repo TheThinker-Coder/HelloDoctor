@@ -1,10 +1,12 @@
 package com.hellodoctor.services;
 
-import com.hellodoctor.entities.Users;
-import com.hellodoctor.requestdto.SignInRequestDto;
+import com.hellodoctor.responsedto.PatientResponseDto;
 
 public interface UsersService {
+
+	PatientResponseDto getByEmail(String userEmail, String password);
 	
-	public Users  signIn(SignInRequestDto signInRequestDto);
+	
+
 
 }

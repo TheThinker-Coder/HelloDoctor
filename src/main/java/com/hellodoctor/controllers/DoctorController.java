@@ -74,7 +74,7 @@ public class DoctorController {
 		} catch (Exception e) {
 			log.trace("InsideEmployeePostExceptionBlock");
 			log.trace("ExceptionStarted");
-			ControllerException ce = new ControllerException(Constant.EXCEPTIONEMAILVALIDATION + e.getMessage());
+			ControllerException ce = new ControllerException( e.getMessage());
 			log.error("ControllerExceptionError");
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		}
