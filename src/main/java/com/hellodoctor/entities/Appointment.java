@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "appointment")
 public class Appointment {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long appointmentId;
 	private String patientName;
 	private String patientEmail;

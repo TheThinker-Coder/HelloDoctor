@@ -36,14 +36,13 @@ public class HospitalController {
 		} catch (BusinessException e) {
 			log.info("InsideEmployeePostCatchBusinessBlock");
 			log.trace("ControllerExceptionStarted");
-			ControllerException ce = new ControllerException(e.getErrorCode(), e.getErrorMessage());
+			ControllerException ce = new ControllerException();
 			log.error("ControllerExceptionError");
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			log.info("InsideEmployeePostExceptionBlock");
 			log.info("ExceptionStarted");
-			ControllerException ce = new ControllerException(Constant.EXCEPTIONCODE608,
-					Constant.EXCEPTION613 + e.getMessage());
+			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
 			log.error("ControllerExceptionError");
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		}
@@ -57,11 +56,10 @@ public class HospitalController {
 			HospitalsDetails hospitalsDetails = helloDoctorServices.getHospitalById(hospitalId);
 			return new ResponseEntity<HospitalsDetails>(hospitalsDetails, HttpStatus.OK);
 		} catch (BusinessException e) {
-			ControllerException ce = new ControllerException(e.getErrorCode(), e.getErrorMessage());
+			ControllerException ce = new ControllerException();
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			ControllerException ce = new ControllerException(Constant.EXCEPTIONCODE608,
-					Constant.EXCEPTION613 + e.getMessage());
+			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -75,11 +73,10 @@ public class HospitalController {
 			return new ResponseEntity<List<HospitalsDetails>>(listofAllHospital, HttpStatus.OK);
 		} catch (BusinessException e) {
 
-			ControllerException ce = new ControllerException(e.getErrorCode(), e.getErrorMessage());
+			ControllerException ce = new ControllerException();
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			ControllerException ce = new ControllerException(Constant.EXCEPTIONCODE608,
-					Constant.EXCEPTION613 + e.getMessage());
+			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		}
 
@@ -94,11 +91,10 @@ public class HospitalController {
 			List<HospitalsDetails>hospitalsDetailsByName = helloDoctorServices.findByhospitalName(hospitalName);
 			return new ResponseEntity<List<HospitalsDetails>>(hospitalsDetailsByName,HttpStatus.OK);
 		} catch (BusinessException e) {
-			ControllerException ce = new ControllerException(e.getErrorCode(), e.getErrorMessage());
+			ControllerException ce = new ControllerException();
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			ControllerException ce = new ControllerException(Constant.EXCEPTIONCODE608,
-					Constant.EXCEPTION613 + e.getMessage());
+			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		}
 		

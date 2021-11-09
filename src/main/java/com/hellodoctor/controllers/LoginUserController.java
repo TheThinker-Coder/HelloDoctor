@@ -21,6 +21,7 @@ public class LoginUserController {
 	public ResponseEntity<?> loginUser(@RequestBody UserRequestDto userRequestDto) {
 		usersService.getByEmail(userRequestDto.getEmail(),userRequestDto.getPassword());
 		return new ResponseEntity<>("Login success",HttpStatus.OK);
+		// doctor
 		
 	}
 

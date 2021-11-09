@@ -5,6 +5,7 @@ import java.util.List;
 import com.hellodoctor.entities.Doctor;
 import com.hellodoctor.entities.HospitalAddress;
 import com.hellodoctor.entities.HospitalsDetails;
+import com.hellodoctor.requestdto.DoctorUpdateDto;
 import com.hellodoctor.requestdto.RequestDto;
 
 public interface HelloDoctorServices {
@@ -18,4 +19,6 @@ public interface HelloDoctorServices {
     public List<HospitalsDetails>  findByhospitalName(String hospitalName);
     public HospitalAddress getHospitalAddressById(Long addressId);
     public void deletedoctorById(Long doctorId);
+    public Doctor updateDoctor(DoctorUpdateDto doctorUpdateDto,String doctorEmail);
+    
 }
