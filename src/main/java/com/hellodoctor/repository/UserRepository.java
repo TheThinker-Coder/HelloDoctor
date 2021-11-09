@@ -5,14 +5,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.hellodoctor.entities.User;
+import com.hellodoctor.entities.Users;
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<Users, Long> {
 	
-	//public User findByEmailAndPassword(String email,String password);
-	public User findByEmail(String email);
 	
-	@Query("select u from User u where u.email = :email")
-	public User getUserByuUserName(@Param("email") String email);
+	public Users findByEmail(String email);
+	
+	
 
 }

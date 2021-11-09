@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.hellodoctor.configuration.CustomerDeatils;
-import com.hellodoctor.entities.User;
+import com.hellodoctor.entities.Users;
 import com.hellodoctor.repository.UserRepository;
 
 @Service
@@ -18,7 +18,7 @@ public class UserDetailsServiceImplements implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.getUserByuUserName(username);
+		Users user = userRepository.findByEmail(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("could not found user");
 		}

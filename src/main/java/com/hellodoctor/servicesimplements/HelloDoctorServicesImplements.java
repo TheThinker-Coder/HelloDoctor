@@ -11,7 +11,7 @@ import com.hellodoctor.constant.Constant;
 import com.hellodoctor.entities.Doctor;
 import com.hellodoctor.entities.HospitalAddress;
 import com.hellodoctor.entities.HospitalsDetails;
-import com.hellodoctor.entities.User;
+import com.hellodoctor.entities.Users;
 import com.hellodoctor.exception.BusinessException;
 import com.hellodoctor.exception.EmptyInputException;
 import com.hellodoctor.repository.DoctorRepository;
@@ -43,7 +43,7 @@ public class HelloDoctorServicesImplements implements HelloDoctorServices {
 	public Doctor updateDoctor(DoctorUpdateDto doctorUpdateDto,String doctorEmail) {
 		log.info("inside Doctor Update Service");
 		Doctor findBydoctorEmail = doctorRepository.findBydoctorEmail(doctorEmail);
-		User findById = usersRepository.findById(findBydoctorEmail.getUserId().getUserId()).orElse(null);
+		Users findById = usersRepository.findById(findBydoctorEmail.getUserId().getUserId()).orElse(null);
 		//Doctor doctor = new Doctor();
 		if (findBydoctorEmail != null) {
 			findBydoctorEmail.setDoctorName(doctorUpdateDto.getDoctorName());
@@ -94,7 +94,7 @@ public class HelloDoctorServicesImplements implements HelloDoctorServices {
 			doctor.setRole(Constant.DOCTORROLE);
 			Doctor savedoctor = doctorRepository.save(doctor); // for saving doctor and calling doctor id
 			log.info("calling user object");
-			User users = new User(); // for setting feilds in user table
+			Users users = new Users(); // for setting feilds in user table
 			users.setDoctorId(savedoctor);
 			users.setEmail(requestDto.getDoctorEmail());
 			users.setMobile(requestDto.getDoctorMobileNumber());

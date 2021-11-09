@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import com.hellodoctor.constant.Constant;
 import com.hellodoctor.entities.Patient;
-import com.hellodoctor.entities.User;
+import com.hellodoctor.entities.Users;
 import com.hellodoctor.exception.RecordNotFoundException;
 import com.hellodoctor.repository.PatientRepository;
 import com.hellodoctor.repository.UserRepository;
@@ -28,7 +28,7 @@ public class PatientServicesImpl implements PatientService {
 	public PatientResponseDto savePatient(PatientRequestDto patientRequestDto) {
 
 		Patient patient = new Patient();
-		User user = new User();
+		Users user = new Users();
 
 		patient.setPatientName(patientRequestDto.getPatientName());
 		patient.setPatientEmail(patientRequestDto.getPatientEmail());

@@ -2,7 +2,7 @@ package com.hellodoctor.requestdto;
 
 import java.util.Date;
 
-import com.hellodoctor.entities.User;
+import com.hellodoctor.entities.Users;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +19,6 @@ public class DoctorUpdateDto {
 	private String doctorPassword;
 	private Date updateDate;
 	private String hospitalName;
-	private User users;
+	private Users users;
 
 }

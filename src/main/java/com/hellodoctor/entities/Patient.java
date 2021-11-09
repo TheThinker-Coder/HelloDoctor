@@ -36,7 +36,7 @@ public class Patient {
 	private Date updatedDate;
 	private String role;
 	@OneToOne(mappedBy = "patientId", cascade = CascadeType.ALL)
-	private User userId;
+	private Users userId;
 
 	@OneToMany(mappedBy = "patient")
 	private List<Appointment> appointment;

@@ -42,7 +42,7 @@ public class Doctor {
 	private String hospitalName;
 	
 	@OneToOne(mappedBy = "doctorId",cascade = CascadeType.ALL)
-	private User userId;
+	private Users userId;
 	@ManyToOne
 	private HospitalsDetails hospitalsDetails;
 	

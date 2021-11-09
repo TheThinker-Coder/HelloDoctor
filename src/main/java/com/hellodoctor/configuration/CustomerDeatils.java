@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.hellodoctor.entities.User;
+import com.hellodoctor.entities.Users;
 
 public class CustomerDeatils implements UserDetails {
 
@@ -15,9 +15,9 @@ public class CustomerDeatils implements UserDetails {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private User user;
+	private Users user;
 	
-	public CustomerDeatils(User user) {
+	public CustomerDeatils(Users user) {
 		super();
 		this.user = user;
 	}
