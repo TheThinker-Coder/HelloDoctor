@@ -1,8 +1,9 @@
 package com.hellodoctor.servicesimplements;
 
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -20,10 +21,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@Autowired
 	private UsersRepository usersRepository;
-	
-	@Autowired 
-	private BCryptPasswordEncoder dPassword;
-	
+
 	@Override
 	public PatientResponseDto getByEmail(String email, String password) {
 		Users user = usersRepository.findByEmail(email);
@@ -31,22 +29,16 @@ public class UsersServiceImpl implements UsersService {
 			log.error("User not found with email: {}", email);
 			throw new UsernameNotFoundException("User not found with email: " + email);
 		}
-		
-		if(dPassword.matches(user.getPassword(), password)) {
+
+		if (!user.getPassword().equals((Base64.getEncoder().encodeToString(password.toString().getBytes())))) {
 			throw new InvalidDataException("password not match");
 		}
-		
-//		if(!user.getPassword().equals(password)) {
-//			throw new InvalidDataException("password not match");
-//		}
 		PatientResponseDto dto = new PatientResponseDto();
 		dto.setPatientId(user.getUserId());
 		dto.setPatientEmail(user.getEmail());
 		dto.setRole(user.getRole());
-		
+
 		return dto;
 	}
-
-	
 
 }
