@@ -30,11 +30,10 @@ public class HospitalAddressController {
 			HospitalAddress hospitalAddress = helloDoctorServices.getHospitalAddressById(addressId);
 			return new ResponseEntity<HospitalAddress>(hospitalAddress, HttpStatus.OK);
 		} catch (BusinessException e) {
-			ControllerException ce = new ControllerException(e.getErrorCode(), e.getErrorMessage());
+			ControllerException ce = new ControllerException();
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			ControllerException ce = new ControllerException(Constant.EXCEPTIONCODE608,
-					Constant.EXCEPTION613 + e.getMessage());
+			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		}
 	}

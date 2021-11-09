@@ -16,4 +16,12 @@ spring:
     generate-ddl: true
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL8Dialect
-     
+ 
+ # jwt key 
+ 
+security:
+  jwt:
+    token:
+      secret-key: secret-key
+      #expire-length: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
+  

@@ -2,17 +2,15 @@ package com.hellodoctor.servicesimplements;
 
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-
 import com.hellodoctor.constant.Constant;
 import com.hellodoctor.entities.Patient;
-import com.hellodoctor.entities.Users;
+import com.hellodoctor.entities.User;
 import com.hellodoctor.exception.RecordNotFoundException;
 import com.hellodoctor.repository.PatientRepository;
-import com.hellodoctor.repository.UsersRepository;
+import com.hellodoctor.repository.UserRepository;
 import com.hellodoctor.requestdto.PatientRequestDto;
 import com.hellodoctor.responsedto.PatientResponseDto;
 import com.hellodoctor.services.PatientService;
@@ -24,13 +22,13 @@ public class PatientServicesImpl implements PatientService {
 	private PatientRepository patientRepository;
 
 	@Autowired
-	private UsersRepository usersRipository;
+	private UserRepository usersRipository;
 
 	@Override
 	public PatientResponseDto savePatient(PatientRequestDto patientRequestDto) {
 
 		Patient patient = new Patient();
-		Users user = new Users();
+		User user = new User();
 
 		patient.setPatientName(patientRequestDto.getPatientName());
 		patient.setPatientEmail(patientRequestDto.getPatientEmail());

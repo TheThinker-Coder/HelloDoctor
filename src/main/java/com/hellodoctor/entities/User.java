@@ -19,9 +19,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 	@Column(unique = true)
 	private String email;
@@ -34,5 +34,9 @@ public class Users {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "patientId")
 	private Patient patientId; 
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "doctorId")
+	private Doctor doctorId;
 
 }
