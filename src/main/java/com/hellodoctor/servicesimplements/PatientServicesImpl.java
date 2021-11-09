@@ -1,11 +1,11 @@
 package com.hellodoctor.servicesimplements;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -31,8 +31,6 @@ public class PatientServicesImpl implements PatientService {
 	@Autowired
 	private UsersRepository usersRipository;
 
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
 	
 	@Override
 	public PatientResponseDto savePatient(PatientRequestDto patientRequestDto) {
@@ -44,14 +42,14 @@ public class PatientServicesImpl implements PatientService {
 		patient.setPatientEmail(patientRequestDto.getPatientEmail());
 		patient.setPatientMobileNumber(patientRequestDto.getPatientMobileNumber());
 		patient.setRegisterDate(new Date());
-		patient.setPatientPassword(passwordEncoder.encode(patientRequestDto.getPatientPassword()));
+		patient.setPatientPassword((Base64.getEncoder().encodeToString(patientRequestDto.getPatientPassword().toString().getBytes())));
 		patient.setRole(Constant.PATIENTROLE);
 
 		log.info("Persisting patient data into database");
 		Patient savePatient = patientRepository.save(patient);
 		user.setPatientId(savePatient);
 		user.setEmail(patientRequestDto.getPatientEmail());
-		user.setPassword(passwordEncoder.encode(patientRequestDto.getPatientPassword()));
+		user.setPassword((Base64.getEncoder().encodeToString(patientRequestDto.getPatientPassword().toString().getBytes())));
 		user.setMobile(patientRequestDto.getPatientMobileNumber());
 		user.setRole(patient.getRole());
 
