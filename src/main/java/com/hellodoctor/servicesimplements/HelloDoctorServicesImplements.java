@@ -3,7 +3,6 @@ package com.hellodoctor.servicesimplements;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hellodoctor.constant.Constant;
@@ -19,7 +18,6 @@ import com.hellodoctor.repository.HospitalsDetailsRepository;
 import com.hellodoctor.repository.UsersRepository;
 import com.hellodoctor.requestdto.RequestDto;
 import com.hellodoctor.services.HelloDoctorServices;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
