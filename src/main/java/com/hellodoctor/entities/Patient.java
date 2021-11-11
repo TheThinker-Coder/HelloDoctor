@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "patient")
 public class Patient {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long patientId;
 	private String patientName;
 	@Column(unique = true)

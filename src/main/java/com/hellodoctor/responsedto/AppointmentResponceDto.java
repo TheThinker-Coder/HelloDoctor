@@ -1,7 +1,5 @@
 package com.hellodoctor.responsedto;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +15,7 @@ public class AppointmentResponceDto {
 	private String	doctorName;
 	private String	doctorEmail;
 	private Long patientMobileNo;
-	private Date appointmentDate;
+	private String appointmentDate;
 	private String time;
 	private String File;
 	private Long doctorId;

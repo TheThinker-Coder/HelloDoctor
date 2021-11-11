@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 public class AppointmentRequestDto {
 
 	private String patientEmail;
-	private Long patientMobileNo;
 	private String time;
 	private String fileAttech;
 	private String doctorEmail;
+	private String appointmentDate;
 	
 	
 }
