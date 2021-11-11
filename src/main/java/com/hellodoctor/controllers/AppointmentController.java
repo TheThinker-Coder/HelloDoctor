@@ -1,8 +1,12 @@
 package com.hellodoctor.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +17,7 @@ import com.hellodoctor.requestdto.AppointmentRequestDto;
 import com.hellodoctor.responsedto.AppointmentResponceDto;
 import com.hellodoctor.services.AppointmentSerevice;
 import com.hellodoctor.services.FileStorageService;
+
 
 @RestController
 @RequestMapping("/appointment")
@@ -33,6 +38,12 @@ public class AppointmentController {
 		}
 		appointmentRequestDto.setFileAttech(fileAttech);
 		return appointmentService.saveAppointment(appointmentRequestDto);
+	}
+	
+	@GetMapping("/getAppointment/{byPatientEmail}")
+	public List<AppointmentResponceDto> getAppointment(@PathVariable("byPatientEmail") String byPatientEmail) {
+		return appointmentService.getAppointmentByPatientEmail(byPatientEmail);
+		
 	}
 
 }

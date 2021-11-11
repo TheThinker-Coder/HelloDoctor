@@ -1,6 +1,7 @@
 package com.hellodoctor.servicesimplements;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,7 +65,7 @@ public class AppointmentServiceImpl implements AppointmentSerevice {
 		appointment.setDoctorName(doctor.getDoctorName());
 		appointment.setDoctorEmail(doctor.getDoctorEmail());
 		appointment.setFile(appointmentRequestDto.getFileAttech());
-		appointment.setAppointmentDate(new Date());
+		appointment.setAppointmentDate(appointmentRequestDto.getAppointmentDate());
 		appointment.setTime(appointmentRequestDto.getTime());
 		
 		log.info(" save appointment "+appointmentRequestDto.getDoctorEmail());
@@ -78,10 +79,37 @@ public class AppointmentServiceImpl implements AppointmentSerevice {
 		appointmentResponceDto.setPatientName(saveAppointment.getPatientName());
 		appointmentResponceDto.setPatientEmail(saveAppointment.getPatientEmail());
 		appointmentResponceDto.setPatientMobileNo(saveAppointment.getPatientMobileNo());
+		appointmentResponceDto.setAppointmentDate(saveAppointment.getAppointmentDate());;
 		appointmentResponceDto.setTime(appointmentRequestDto.getTime());
 		UriComponentsBuilder filePath = ServletUriComponentsBuilder.fromCurrentContextPath().path("/image/").path(appointmentRequestDto.getFileAttech());
 		appointmentResponceDto.setFile(filePath.toUriString());
 		log.info(" return saveAppointment serviceImpl method "+appointmentRequestDto.getDoctorEmail());
+		return appointmentResponceDto;
+	}
+
+	@Override
+	public List<AppointmentResponceDto> getAppointmentByPatientEmail(String byPatientEmail) {
+		log.info("start getAppointmentByPatientEmail serviceImpl method");
+		List<AppointmentResponceDto> appointmentResponceDto = new ArrayList<>();
+		
+		log.info(" fetchin appointment ");
+		List<Appointment> appointmentDetails = appointmentRepository.findByPatientEmail(byPatientEmail);
+		
+		for(Appointment appDeatiels :appointmentDetails) {
+			AppointmentResponceDto dto = new AppointmentResponceDto();
+			dto.setAppointmentId(appDeatiels.getAppointmentId());
+			dto.setPatientEmail(appDeatiels.getPatientEmail());
+			dto.setPatientName(appDeatiels.getPatientName());
+			dto.setPatientMobileNo(appDeatiels.getPatientMobileNo());
+			dto.setDoctorName(appDeatiels.getDoctorName());
+			dto.setDoctorName(appDeatiels.getDoctorName());
+			dto.setAppointmentDate(appDeatiels.getAppointmentDate());
+			dto.setTime(appDeatiels.getTime());
+			dto.setFile(appDeatiels.getFile());
+			appointmentResponceDto.add(dto);
+		}
+		
+		log.info(" return getAppointmentByPatientEmail serviceImpl method ");
 		return appointmentResponceDto;
 	} 
 	

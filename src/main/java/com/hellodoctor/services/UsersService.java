@@ -1,10 +1,10 @@
 package com.hellodoctor.services;
 
-import com.hellodoctor.responsedto.PatientResponseDto;
+import com.hellodoctor.responsedto.JwtResponseDto;
 
 public interface UsersService {
 
-	PatientResponseDto getByEmail(String userEmail, String password);
+	JwtResponseDto getByEmail(String userEmail, String password);
 	
 	
 

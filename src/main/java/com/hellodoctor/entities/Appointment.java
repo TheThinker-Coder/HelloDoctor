@@ -1,7 +1,5 @@
 package com.hellodoctor.entities;
 
-import java.util.Date;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +27,7 @@ public class Appointment {
 	private String doctorName;
 	private String doctorEmail;
 	private Long patientMobileNo;
-	private Date appointmentDate;
+	private String appointmentDate;
 	private String time;
 	private String File;
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
