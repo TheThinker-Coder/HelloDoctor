@@ -1,7 +1,7 @@
 package com.hellodoctor.constant;
 
 public class Constant {
-	
+
 	public static String DOCTORROLE ="ROLE_DOCTOR"; 
 	public static String PATIENTROLE = "ROLE_PATIENT";
 	public static String EXCEPTION613 ="Something Went Wrong";
@@ -22,7 +22,6 @@ public class Constant {
 	public static String EXCEPTIONCODE609="609";
 	public static String EXCEPTIONCODE621="621";
 	public static String EXCEPTIONCODE640="640";
-
 	public static String EXCEPTION606= "Given Id Is Null Please Send Some Id";
 	public static String EXCEPTION607="Please Enter The Valid Id";
 	public static String EXCEPTION608="Something Went Wrong";
@@ -33,7 +32,6 @@ public class Constant {
 	public static String EXCEPTION609 = "Given Id For Deletion Is Null Please Send Some Id";
 	public static String DOCTORDELETE ="This Doctor is Deleted";
 	public static String EXCEPTIONEMAILVALIDATION ="Please Enter The Valid Email Id";
-
 	public static String INVALIDUSER="User Not Found";
 	public static String VALIDUSER="User Found";
 }

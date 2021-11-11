@@ -9,5 +9,5 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 	 
 	
 	public Doctor findBydoctorEmail(String doctorEmail);
-
+	 public Doctor findByResetPasswordToken(String token);
 }

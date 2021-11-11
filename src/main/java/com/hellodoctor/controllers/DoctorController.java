@@ -38,23 +38,12 @@ public class DoctorController {
 	// doctor post method
 	@PostMapping("/adddoctor")
 	public ResponseEntity<?> addDoctor(@RequestBody RequestDto requestDto) {
-		try {
 			log.info("inside controller on doctor save");
 			this.helloDoctorServices.addDoctor(requestDto);
 			return new ResponseEntity<RequestDto>(requestDto, HttpStatus.OK);
-		} catch (BusinessException e) {
-			log.trace("InsideEmployeePostCatchBusinessBlock");
-			log.trace("ControllerExceptionStarted");
-			ControllerException ce = new ControllerException();
-			log.error("ControllerExceptionError");
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			log.trace("InsideEmployeePostExceptionBlock");
-			log.trace("ExceptionStarted");
-			ControllerException ce = new ControllerException( Constant.EXCEPTION613 + e.getMessage());
-			log.error("ControllerExceptionError");
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		}
+		
+			
+			
 	}
 
 	// doctorUpdateController
