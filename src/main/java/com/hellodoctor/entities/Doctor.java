@@ -40,6 +40,7 @@ public class Doctor {
 	private Date updateDate;
 	private String Role;
 	private String hospitalName;
+	private String resetPasswordToken;
 	
 	@OneToOne(mappedBy = "doctorId",cascade = CascadeType.ALL)
 	private Users userId;

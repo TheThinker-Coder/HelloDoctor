@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import com.hellodoctor.constant.Constant;
 import com.hellodoctor.entities.Doctor;
 import com.hellodoctor.entities.HospitalAddress;
@@ -14,10 +14,11 @@ import com.hellodoctor.entities.HospitalsDetails;
 import com.hellodoctor.entities.Users;
 import com.hellodoctor.exception.BusinessException;
 import com.hellodoctor.exception.EmptyInputException;
+import com.hellodoctor.exception.RecordNotFoundException;
 import com.hellodoctor.repository.DoctorRepository;
 import com.hellodoctor.repository.HospitalAddressRepository;
 import com.hellodoctor.repository.HospitalsDetailsRepository;
-import com.hellodoctor.repository.UserRepository;
+import com.hellodoctor.repository.UsersRepository;
 import com.hellodoctor.requestdto.DoctorUpdateDto;
 import com.hellodoctor.requestdto.RequestDto;
 import com.hellodoctor.services.HelloDoctorServices;
@@ -29,21 +30,19 @@ public class HelloDoctorServicesImplements implements HelloDoctorServices {
 	@Autowired
 	private DoctorRepository doctorRepository;
 	@Autowired
-	private UserRepository usersRepository;
+	private UsersRepository usersRepository;
 	@Autowired
 	private HospitalsDetailsRepository hospitalsDetailsRepository;
 	@Autowired
 	private HospitalAddressRepository hospitalAddressRepository;
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
 
 	// doctorUpdateService
 	@Override
-	public Doctor updateDoctor(DoctorUpdateDto doctorUpdateDto,String doctorEmail) {
+	public Doctor updateDoctor(DoctorUpdateDto doctorUpdateDto, String doctorEmail) {
 		log.info("inside Doctor Update Service");
 		Doctor findBydoctorEmail = doctorRepository.findBydoctorEmail(doctorEmail);
 		Users findById = usersRepository.findById(findBydoctorEmail.getUserId().getUserId()).orElse(null);
-		//Doctor doctor = new Doctor();
+		// Doctor doctor = new Doctor();
 		if (findBydoctorEmail != null) {
 			findBydoctorEmail.setDoctorName(doctorUpdateDto.getDoctorName());
 			findBydoctorEmail.setDoctorMobileNumber(doctorUpdateDto.getDoctorMobileNumber());
@@ -51,22 +50,18 @@ public class HelloDoctorServicesImplements implements HelloDoctorServices {
 			findBydoctorEmail.setHospitalName(doctorUpdateDto.getHospitalName());
 			findBydoctorEmail.setUpdateDate(new Date());
 			log.info("saving Doctor Info In Doctor Entity");
-			doctorRepository.save(findBydoctorEmail);	
+			doctorRepository.save(findBydoctorEmail);
 		}
-		if(findById!=null)
-		{
+		if (findById != null) {
 			findById.setEmail(findBydoctorEmail.getDoctorEmail());
 			findById.setMobile(doctorUpdateDto.getDoctorMobileNumber());
 			findById.setPassword(doctorUpdateDto.getDoctorPassword());
 			usersRepository.save(findById);
-		}
-		else {
+		} else {
 			throw new EmptyInputException(Constant.EXCEPTIONEMAILVALIDATION);
 		}
 		return findBydoctorEmail;
-		
-		
-		
+
 	}
 	// doctorUpdateServiceEnd
 
@@ -84,7 +79,9 @@ public class HelloDoctorServicesImplements implements HelloDoctorServices {
 			doctor.setDoctorName(requestDto.getDoctorName());
 			doctor.setDoctorMobileNumber(requestDto.getDoctorMobileNumber());
 			doctor.setDoctorEmail(requestDto.getDoctorEmail());
-			doctor.setDoctorPassword((Base64.getEncoder().encodeToString(requestDto.getDoctorPassword().toString().getBytes()))); // used for encode the password 
+			doctor.setDoctorPassword(
+					(Base64.getEncoder().encodeToString(requestDto.getDoctorPassword().toString().getBytes()))); // used
+			// password
 			doctor.setDoctorGender(requestDto.getDoctorGender());
 			doctor.setDoctorSpecilzation(requestDto.getDoctorSpecilzation());
 			doctor.setHospitalName(requestDto.getHospitalName());
@@ -92,23 +89,38 @@ public class HelloDoctorServicesImplements implements HelloDoctorServices {
 			doctor.setUpdateDate(new Date());
 			doctor.setRole(Constant.DOCTORROLE);
 			Doctor savedoctor = doctorRepository.save(doctor); // for saving doctor and calling doctor id
+			log.info("checking or matching hospital address exits otr not for saving it into doctor");
+			String hospitalAddress = requestDto.getHospitalName();
+			HospitalsDetails address1 = new HospitalsDetails();
+			address1 = hospitalsDetailsRepository.findByhospitalName(hospitalAddress);
+			log.info("hospital address is = " + hospitalAddress);
+			log.info("database hospital address is " + address1);
+			if (ObjectUtils.isEmpty(address1)) {
+				log.error("current address not found  " + address1);
+				throw new RecordNotFoundException("current address is  not registerd");
+			}
+			// Long address1Id = address1.getHospitalId();
+			doctor.setHospitalsDetails(address1);
 			log.info("calling user object");
 			Users users = new Users(); // for setting feilds in user table
 			users.setDoctorId(savedoctor);
 			users.setEmail(requestDto.getDoctorEmail());
 			users.setMobile(requestDto.getDoctorMobileNumber());
-			users.setPassword((Base64.getEncoder().encodeToString(requestDto.getDoctorPassword().toString().getBytes())));// used for encode the password 
+			users.setPassword(
+					(Base64.getEncoder().encodeToString(requestDto.getDoctorPassword().toString().getBytes())));// used
+																												// //
+																												// password
 			users.setRole(Constant.DOCTORROLE);
 			log.info("saving doctor");
 			log.info("saving user");
 			usersRepository.save(users);// for saving user
 			return doctor;
 		} catch (IllegalArgumentException e) {
-			log.info("inside addEmployee AttendenceServicesImplements IllegalArgumentExceptionCatchBlock");
-			throw new BusinessException(Constant.EXCEPTION602 + e.getMessage());
+			log.info("inside adddoctor hospitlalservice IllegalArgumentExceptionCatchBlock");
+			throw new BusinessException(e.getMessage());
 		} catch (Exception ex) {
-			log.info("inside addEmployee AttendenceServicesImplements ExceptionBlock");
-			throw new BusinessException(Constant.EXCEPTION603 + ex.getMessage());
+			log.info("inside adddoctor hosptialServicesImplements ExceptionBlock");
+			throw new BusinessException(ex.getMessage());
 		}
 	}
 
@@ -120,35 +132,28 @@ public class HelloDoctorServicesImplements implements HelloDoctorServices {
 			log.error("addhopsital Error called");
 			throw new EmptyInputException(Constant.EXCEPTION601);
 		}
-		try {
-			log.info("inside try method of addhospital service");
-			HospitalsDetails hospitalsDetails = new HospitalsDetails();
-			hospitalsDetails.setHospitalName(requestDto.getHospitalName());
-			hospitalsDetails.setNoOfBeds(requestDto.getNoOfBeds());
-			hospitalsDetails.setNoOfIcu(requestDto.getNoOfIcu());
-			hospitalsDetails.setNoOfOt(requestDto.getNoOfOt());
-			hospitalsDetails.setEmergency(requestDto.getEmergency());
-			hospitalsDetails.setContactNumber(requestDto.getContactnumber());
-			HospitalAddress hospitalAddress = new HospitalAddress(); // for saving hospital address using mapping
-			hospitalAddress.setAddressName(requestDto.getAddressName());
-			hospitalAddress.setCity(requestDto.getCity());
-			hospitalAddress.setState(requestDto.getState());
-			hospitalAddress.setZipCode(requestDto.getZipCode());
-			hospitalAddress.setCountry(requestDto.getCountry());
-			log.info("object of address set in hospital");
-			hospitalsDetails.setHospitalAddress(hospitalAddress);
-			log.info("object of hospitalsDetails save in hospitalsDetails");
-			hospitalsDetailsRepository.save(hospitalsDetails);
-			log.info("object of hospitalAddress save in hospitalAddress");
-			// hospitalAddressRepository.save(hospitalAddress);
-			return hospitalsDetails;
-		} catch (IllegalArgumentException e) {
-			log.info("inside addEmployee AttendenceServicesImplements IllegalArgumentExceptionCatchBlock");
-			throw new BusinessException(Constant.EXCEPTION602 + e.getMessage());
-		} catch (Exception ex) {
-			log.info("inside addEmployee AttendenceServicesImplements ExceptionBlock");
-			throw new BusinessException(Constant.EXCEPTION603 + ex.getMessage());
-		}
+
+		log.info("inside try method of addhospital service");
+		HospitalsDetails hospitalsDetails = new HospitalsDetails();
+		hospitalsDetails.setHospitalName(requestDto.getHospitalName());
+		hospitalsDetails.setNoOfBeds(requestDto.getNoOfBeds());
+		hospitalsDetails.setNoOfIcu(requestDto.getNoOfIcu());
+		hospitalsDetails.setNoOfOt(requestDto.getNoOfOt());
+		hospitalsDetails.setEmergency(requestDto.getEmergency());
+		hospitalsDetails.setContactNumber(requestDto.getContactnumber());
+		HospitalAddress hospitalAddress = new HospitalAddress(); // for saving hospital address using mapping
+		hospitalAddress.setAddressName(requestDto.getAddressName());
+		hospitalAddress.setCity(requestDto.getCity());
+		hospitalAddress.setState(requestDto.getState());
+		hospitalAddress.setZipCode(requestDto.getZipCode());
+		hospitalAddress.setCountry(requestDto.getCountry());
+		log.info("object of address set in hospital");
+		hospitalsDetails.setHospitalAddress(hospitalAddress);
+		log.info("object of hospitalsDetails save in hospitalsDetails");
+		hospitalsDetailsRepository.save(hospitalsDetails);
+		log.info("object of hospitalAddress save in hospitalAddress");
+		// hospitalAddressRepository.save(hospitalAddress);
+		return hospitalsDetails;
 
 	}
 	// hospital info end
@@ -270,21 +275,53 @@ public class HelloDoctorServicesImplements implements HelloDoctorServices {
 	// get hospital by name
 	@Override
 	public List<HospitalsDetails> findByhospitalName(String hospitalName) {
-		List<HospitalsDetails> hospitallist = null;
-		hospitallist = hospitalsDetailsRepository.findByhospitalName(hospitalName);
-		try {
-			hospitallist = hospitalsDetailsRepository.findByhospitalName(hospitalName);
-		} catch (Exception e) {
-			throw new BusinessException(Constant.EXCEPTION618);
+//		List<HospitalsDetails> hospitallist = null;
+//		hospitallist = hospitalsDetailsRepository.findByhospitalName(hospitalName);
+//		try {
+//			hospitallist = hospitalsDetailsRepository.findByhospitalName(hospitalName);
+//		} catch (Exception e) {
+//			throw new BusinessException(Constant.EXCEPTION618);
+//		}
+//		if (hospitallist.isEmpty())
+//			throw new BusinessException(Constant.EXCEPTION604);
+//		log.info("doctor list object");
+//		return hospitallist;
+		return null;
+	}
+
+	@Override
+	public void updateResetPasswordToken(String token, String email) throws RecordNotFoundException {
+		System.out.println(email);
+		Doctor user = doctorRepository.findBydoctorEmail(email);
+		if (user != null) {
+			user.setResetPasswordToken(token);
+			doctorRepository.save(user);
+		} else {
+			throw new RecordNotFoundException("Cant find the user with this email" + email);
 		}
-		if (hospitallist.isEmpty())
-			throw new BusinessException(Constant.EXCEPTION604);
-		log.info("doctor list object");
-		return hospitallist;
+	}
+
+	@Override
+	public Doctor getByResetPasswordToken(String token) {
+		return doctorRepository.findByResetPasswordToken(token);
+	}
+
+	@Override
+	public void updatePassword(Doctor user, String newPassword) {
+		user.setDoctorPassword(newPassword);
+		Users findById = usersRepository.findById(user.getUserId().getUserId()).orElse(null);
+		user.setResetPasswordToken(null);
+		doctorRepository.save(user);
+		if (findById != null) {
+			// Users users = new Users();
+			findById.setPassword(user.getDoctorPassword());
+			usersRepository.save(findById);
+
 	}
 
 	// get hospital by name end
 
 	// for getting hospital details via address mapping end
 
+	}
 }

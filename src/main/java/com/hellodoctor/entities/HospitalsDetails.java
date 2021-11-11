@@ -34,7 +34,6 @@ public class HospitalsDetails {
 	@OneToMany(mappedBy = "hospitalsDetails")
 	private List<Doctor> doctor;
 	
-	
 	@OneToOne(cascade = CascadeType.ALL)
 	private HospitalAddress hospitalAddress;
 

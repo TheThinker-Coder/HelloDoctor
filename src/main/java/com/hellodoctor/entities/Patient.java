@@ -37,7 +37,8 @@ public class Patient {
 	private String role;
 	@OneToOne(mappedBy = "patientId", cascade = CascadeType.ALL)
 	private Users userId;
-
+	private String resetPasswordToken;
+	
 	@OneToMany(mappedBy = "patient")
 	private List<Appointment> appointment;
 
