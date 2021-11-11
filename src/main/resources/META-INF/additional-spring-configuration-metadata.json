@@ -1,5 +1,32 @@
-{"properties": [{
-  "name": "security.jwt.token.secret-key",
-  "type": "java.lang.String",
-  "description": "A description for 'security.jwt.token.secret-key'"
-}]}
+{"properties": [
+  {
+    "name": "security.jwt.token.secret-key",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.token.secret-key'"
+  },
+  {
+    "name": "file.upload-dir",
+    "type": "java.lang.String",
+    "description": "A description for 'file.upload-dir'"
+  },
+  {
+    "name": "file.servlet.multipart.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'file.servlet.multipart.enabled'"
+  },
+  {
+    "name": "file.servlet.multipart.file-size-threshold",
+    "type": "java.lang.String",
+    "description": "A description for 'file.servlet.multipart.file-size-threshold'"
+  },
+  {
+    "name": "file.servlet.multipart.max-file-size",
+    "type": "java.lang.String",
+    "description": "A description for 'file.servlet.multipart.max-file-size'"
+  },
+  {
+    "name": "file.servlet.multipart.max-request-size",
+    "type": "java.lang.String",
+    "description": "A description for 'file.servlet.multipart.max-request-size'"
+  }
+]}

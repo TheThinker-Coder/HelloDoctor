@@ -1,13 +1,15 @@
 package com.hellodoctor.servicesimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.hellodoctor.entities.Patient;
 import com.hellodoctor.entities.Users;
 import com.hellodoctor.exception.RecordNotFoundException;
 import com.hellodoctor.repository.PatientRepository;
 import com.hellodoctor.repository.UsersRepository;
 import com.hellodoctor.services.PatientForgetPasswordServices;
-
+@Service
 public class PatientForgetPasswordServicesImplements implements PatientForgetPasswordServices {
 	
 	@Autowired
