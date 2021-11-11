@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.hellodoctor.configuration.CustomerDeatils;
 import com.hellodoctor.entities.Users;
-import com.hellodoctor.repository.UserRepository;
+import com.hellodoctor.repository.UsersRepository;
 
 @Service
 public class UserDetailsServiceImplements implements UserDetailsService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UsersRepository userRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -12,7 +12,7 @@ import com.hellodoctor.entities.Patient;
 import com.hellodoctor.entities.Users;
 import com.hellodoctor.exception.RecordNotFoundException;
 import com.hellodoctor.repository.PatientRepository;
-import com.hellodoctor.repository.UserRepository;
+import com.hellodoctor.repository.UsersRepository;
 import com.hellodoctor.requestdto.PatientRequestDto;
 import com.hellodoctor.responsedto.PatientResponseDto;
 import com.hellodoctor.services.PatientService;
@@ -27,12 +27,13 @@ public class PatientServicesImpl implements PatientService {
 	private PatientRepository patientRepository;
 
 	@Autowired
-	private UserRepository usersRipository;
+	private UsersRepository usersRipository;
 
 	
 	@Override
 	public PatientResponseDto savePatient(PatientRequestDto patientRequestDto) {
 
+		log.info("start savePatient serviceImpl method");
 		Patient patient = new Patient();
 		Users user = new Users();
 
@@ -63,12 +64,14 @@ public class PatientServicesImpl implements PatientService {
 		patientResponseDto.setRegisterDate(savePatient.getRegisterDate());
 		patientResponseDto.setRole(savePatient.getRole());
 
+		log.info("return savePatient serviceImpl method");
 		return patientResponseDto;
 	}
 
 	@Override
 	public List<PatientResponseDto> getAllPatient() {
 
+		log.info("start getAllPatient serviceImpl method");
 		List<Patient> allPatients = patientRepository.findAll();
 		List<PatientResponseDto> patientResponseDto = new ArrayList<>();
 
@@ -85,12 +88,14 @@ public class PatientServicesImpl implements PatientService {
 			patientResponseDto.add(dto);
 		}
 
+		log.info("return getAllPatient serviceImpl method");
 		return patientResponseDto;
 	}
 
 	@Override
 	public PatientResponseDto getPatientById(Long patientId) {
 
+		log.info("start getPatientById serviceImpl method");
 		Patient DbPatient = patientRepository.findById(patientId).orElse(null);
 
 		if (ObjectUtils.isEmpty(DbPatient)) {
@@ -107,12 +112,15 @@ public class PatientServicesImpl implements PatientService {
 		patientResponseDto.setRegisterDate(DbPatient.getRegisterDate());
 		patientResponseDto.setUpdatedDate(DbPatient.getUpdatedDate());
 		patientResponseDto.setRole(DbPatient.getRole());
+		
+		log.info("return getPatientById serviceImpl method");
 		return patientResponseDto;
 	}
 
 	@Override
 	public PatientResponseDto getPatientByPatientEmail(String patientEmail) {
 
+		log.info("start getPatientByPatientEmail serviceImpl method");
 		Patient patient = patientRepository.findByPatientEmail(patientEmail);
 
 		if (ObjectUtils.isEmpty(patient)) {
@@ -131,12 +139,14 @@ public class PatientServicesImpl implements PatientService {
 		patientResponseDto.setRegisterDate(patient.getRegisterDate());
 		patientResponseDto.setUpdatedDate(patient.getUpdatedDate());
 
+		log.info("return getPatientByPatientEmail serviceImpl method");
 		return patientResponseDto;
 	}
 
 	@Override
 	public PatientResponseDto updatePatient(Long patientId, PatientRequestDto patientRequestDto) {
 
+		log.info("start updatePatient serviceImpl method");
 		Patient dBpatient = patientRepository.findById(patientId).orElse(null);
 
 		if (ObjectUtils.isEmpty(dBpatient)) {
@@ -176,12 +186,14 @@ public class PatientServicesImpl implements PatientService {
 		patientResponseDto.setUpdatedDate(updatePatient.getUpdatedDate());
 		patientResponseDto.setPatientPassword(updatePatient.getPatientPassword());
 
+		log.info("return updatePatient serviceImpl method");
 		return patientResponseDto;
 	}
 
 	@Override
 	public void deletePatientById(Long patientId) {
 
+		log.info("start deletePatientById serviceImpl method");
 		patientRepository.deleteById(patientId);
 	}
 }

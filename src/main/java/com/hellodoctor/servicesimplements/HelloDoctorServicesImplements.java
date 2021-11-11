@@ -17,7 +17,7 @@ import com.hellodoctor.exception.EmptyInputException;
 import com.hellodoctor.repository.DoctorRepository;
 import com.hellodoctor.repository.HospitalAddressRepository;
 import com.hellodoctor.repository.HospitalsDetailsRepository;
-import com.hellodoctor.repository.UserRepository;
+import com.hellodoctor.repository.UsersRepository;
 import com.hellodoctor.requestdto.DoctorUpdateDto;
 import com.hellodoctor.requestdto.RequestDto;
 import com.hellodoctor.services.HelloDoctorServices;
@@ -29,7 +29,7 @@ public class HelloDoctorServicesImplements implements HelloDoctorServices {
 	@Autowired
 	private DoctorRepository doctorRepository;
 	@Autowired
-	private UserRepository usersRepository;
+	private UsersRepository usersRepository;
 	@Autowired
 	private HospitalsDetailsRepository hospitalsDetailsRepository;
 	@Autowired

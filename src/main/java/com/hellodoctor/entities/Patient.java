@@ -38,10 +38,10 @@ public class Patient {
 	@OneToOne(mappedBy = "patientId", cascade = CascadeType.ALL)
 	private Users userId;
 
-	@OneToMany(mappedBy = "patient")
+	@OneToMany(mappedBy = "patient",cascade = CascadeType.ALL)
 	private List<Appointment> appointment;
 
-	@OneToMany(mappedBy = "patience")
+	@OneToMany(mappedBy = "patience",cascade = CascadeType.ALL)
 	private List<ContactUs> contactUs;
 
 }
