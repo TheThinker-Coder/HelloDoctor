@@ -4,7 +4,6 @@ import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -22,7 +21,7 @@ import lombok.extern.log4j.Log4j2;
 public class UsersServiceImpl implements UsersService {
 
 	@Autowired
-	private UserDetailsService userDetailsServiceImpl;
+	private UserDetailsServiceImpl userDetailsServiceImpl;
 	
 	@Autowired
 	private JwtUtil jwtUtil;
@@ -32,7 +31,10 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public JwtResponseDto getByEmail(String email, String password) {
+		
+		log.info("Start getByEmail");
 		Users user = usersRepository.findByEmail(email);
+		
 		if (ObjectUtils.isEmpty(user)) {
 			log.error("User not found with email: {}", email);
 			throw new InvalidDataException("User not found with email: " + email);
@@ -43,6 +45,7 @@ public class UsersServiceImpl implements UsersService {
 		}
 		
 		UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(user.getEmail());
+		log.info("generate token");
 		String token = jwtUtil.generateToken(userDetails);
 		
 		JwtResponseDto dto = new JwtResponseDto();

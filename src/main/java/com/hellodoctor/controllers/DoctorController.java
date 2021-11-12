@@ -18,6 +18,8 @@ import com.hellodoctor.exception.BusinessException;
 import com.hellodoctor.exception.ControllerException;
 import com.hellodoctor.requestdto.DoctorUpdateDto;
 import com.hellodoctor.requestdto.RequestDto;
+import com.hellodoctor.responsedto.AppointmentResponceDto;
+import com.hellodoctor.services.AppointmentSerevice;
 import com.hellodoctor.services.HelloDoctorServices;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,9 @@ public class DoctorController {
 	@Autowired
 	private HelloDoctorServices helloDoctorServices;
 
+	@Autowired
+	private AppointmentSerevice appointmentService;
+
 	@GetMapping("/")
 	public ResponseEntity<String> home() {
 		log.info("inside controller on home");
@@ -38,12 +43,10 @@ public class DoctorController {
 	// doctor post method
 	@PostMapping("/adddoctor")
 	public ResponseEntity<?> addDoctor(@RequestBody RequestDto requestDto) {
-			log.info("inside controller on doctor save");
-			this.helloDoctorServices.addDoctor(requestDto);
-			return new ResponseEntity<RequestDto>(requestDto, HttpStatus.OK);
-		
-			
-			
+		log.info("inside controller on doctor save");
+		this.helloDoctorServices.addDoctor(requestDto);
+		return new ResponseEntity<RequestDto>(requestDto, HttpStatus.OK);
+
 	}
 
 	// doctorUpdateController
@@ -63,7 +66,7 @@ public class DoctorController {
 		} catch (Exception e) {
 			log.trace("InsideEmployeePostExceptionBlock");
 			log.trace("ExceptionStarted");
-			ControllerException ce = new ControllerException( e.getMessage());
+			ControllerException ce = new ControllerException(e.getMessage());
 			log.error("ControllerExceptionError");
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		}
@@ -136,11 +139,17 @@ public class DoctorController {
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			// TODO: handle exception
-			ControllerException ce = new ControllerException(Constant.EXCEPTION613 );
+			ControllerException ce = new ControllerException(Constant.EXCEPTION613);
 			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		}
 
 	}
-	// delete by DoctorById End
+//	get all doctor appointment
+
+	@GetMapping("/getAppointment/{byPatientEmail}")
+	public List<AppointmentResponceDto> getAppointment(@PathVariable("byPatientEmail") String byPatientEmail) {
+		return appointmentService.getAppointmentByPatientEmail(byPatientEmail);
+
+	}
 
 }

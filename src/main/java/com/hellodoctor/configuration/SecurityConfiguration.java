@@ -61,17 +61,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
 		registry.addMapping("/**").allowedOrigins("*");
 	}
 
-//	@Bean
-//	public DaoAuthenticationProvider authenticationProvider() {
-//		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-//		daoAuthenticationProvider.setUserDetailsService(getUserDetailsService());
-//		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-//		return daoAuthenticationProvider;
-//	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.authenticationProvider(authenticationProvider());
 		auth.userDetailsService(userDetailsServiceImpl);
 		
 	}
