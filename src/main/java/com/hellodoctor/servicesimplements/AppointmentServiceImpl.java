@@ -94,15 +94,19 @@ public class AppointmentServiceImpl implements AppointmentSerevice {
 		
 		log.info(" fetchin appointment ");
 		List<Appointment> appointmentDetails = appointmentRepository.findByPatientEmail(byPatientEmail);
-		
+		if(ObjectUtils.isEmpty(appointmentDetails)) {
+			throw new RecordNotFoundException("appointment is empty");
+		}
 		for(Appointment appDeatiels :appointmentDetails) {
 			AppointmentResponceDto dto = new AppointmentResponceDto();
+			dto.setDoctorId(appDeatiels.getDoctor().getDoctorId());
+			dto.setPatientId(appDeatiels.getPatient().getPatientId());
 			dto.setAppointmentId(appDeatiels.getAppointmentId());
 			dto.setPatientEmail(appDeatiels.getPatientEmail());
 			dto.setPatientName(appDeatiels.getPatientName());
 			dto.setPatientMobileNo(appDeatiels.getPatientMobileNo());
 			dto.setDoctorName(appDeatiels.getDoctorName());
-			dto.setDoctorName(appDeatiels.getDoctorName());
+			dto.setDoctorEmail(appDeatiels.getDoctorEmail());
 			dto.setAppointmentDate(appDeatiels.getAppointmentDate());
 			dto.setTime(appDeatiels.getTime());
 			dto.setFile(appDeatiels.getFile());

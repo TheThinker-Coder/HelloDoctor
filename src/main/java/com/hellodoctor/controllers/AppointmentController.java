@@ -18,32 +18,32 @@ import com.hellodoctor.responsedto.AppointmentResponceDto;
 import com.hellodoctor.services.AppointmentSerevice;
 import com.hellodoctor.services.FileStorageService;
 
-
 @RestController
 @RequestMapping("/appointment")
 public class AppointmentController {
-	
+
 	@Autowired
 	private AppointmentSerevice appointmentService;
-	
-	@Autowired 
+
+	@Autowired
 	private FileStorageService fileStorageService;
-	
+
 	@PostMapping("/saveAppointment")
-	public AppointmentResponceDto saveAppointment(@ModelAttribute AppointmentRequestDto appointmentRequestDto, MultipartFile file) {
+	public AppointmentResponceDto saveAppointment(@ModelAttribute AppointmentRequestDto appointmentRequestDto,
+			MultipartFile file) {
 		String fileAttech = fileStorageService.storeFile(file);
-		
-		if(ObjectUtils.isEmpty(fileAttech)) {
+
+		if (ObjectUtils.isEmpty(fileAttech)) {
 			throw new EmptyInputException("file is empty");
 		}
 		appointmentRequestDto.setFileAttech(fileAttech);
 		return appointmentService.saveAppointment(appointmentRequestDto);
 	}
-	
+
 	@GetMapping("/getAppointment/{byPatientEmail}")
 	public List<AppointmentResponceDto> getAppointment(@PathVariable("byPatientEmail") String byPatientEmail) {
 		return appointmentService.getAppointmentByPatientEmail(byPatientEmail);
-		
+
 	}
 
 }
