@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "hospitalsdetails")
 public class HospitalsDetails {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long hospitalId;
 	private String hospitalName;
 	private int noOfBeds;
@@ -33,7 +33,6 @@ public class HospitalsDetails {
 	
 	@OneToMany(mappedBy = "hospitalsDetails")
 	private List<Doctor> doctor;
-	
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private HospitalAddress hospitalAddress;

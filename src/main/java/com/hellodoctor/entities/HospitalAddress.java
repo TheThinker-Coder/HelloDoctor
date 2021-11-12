@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Hospitaladdress")
 public class HospitalAddress {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long addressId;
 	private String addressName;
 	private String State;

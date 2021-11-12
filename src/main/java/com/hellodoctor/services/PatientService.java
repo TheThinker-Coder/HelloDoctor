@@ -1,8 +1,6 @@
 package com.hellodoctor.services;
 
 import java.util.List;
-
-import com.hellodoctor.entities.Patient;
 import com.hellodoctor.requestdto.PatientRequestDto;
 import com.hellodoctor.responsedto.PatientResponseDto;
 
@@ -10,13 +8,13 @@ public interface PatientService {
 
 	public PatientResponseDto savePatient(PatientRequestDto patientRequestDto);
 	
-	public List<Patient> getAllPatient();
+	public List<PatientResponseDto> getAllPatient();
 
-	public PatientResponseDto getPatientById(long patientId);
+	public PatientResponseDto getPatientById(Long patientId);
 
-	public Patient updatePatient(long patientId, PatientRequestDto patientRequestDto);
+	public PatientResponseDto updatePatient(Long patientId, PatientRequestDto patientRequestDto);
 
-	public void deletePatientById(long patientId);
+	public void deletePatientById(Long patientId);
 
-	public PatientResponseDto getPatientByEmail(String patientEmail);
+	public PatientResponseDto getPatientByPatientEmail(String patientEmail);
 }

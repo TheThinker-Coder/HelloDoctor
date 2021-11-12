@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PatientRequestDto {
 	
-	private long patientId;
 	private String patientName;
 	private String patientEmail;
 	private String patientPassword;

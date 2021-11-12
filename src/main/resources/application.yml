@@ -7,13 +7,49 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+    
   application:
     name:  HELLO-DOCTOR
+  mail:
+    host: smtp.gmail.com
+    username:  testmails596@gmail.com
+    password: Dummy@123
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 #hibernate config
   jpa:
     hibernate:
       ddl-auto: update
     generate-ddl: true
-    show-sql: true
+   
     database-platform: org.hibernate.dialect.MySQL8Dialect
-     
+ 
+ # jwt key 
+ 
+security:
+  jwt:
+    token:
+      secret-key: secret-key
+      #expire-length: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
+
+  
+
+
+
+
+
+
+file:
+    upload-dir: ./src/main/resources/
+    servlet:
+        multipart:
+            enabled: true
+            file-size-threshold: 2KB
+            max-file-size: 200MB
+            max-request-size: 215MB
+

@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "patient")
 public class Patient {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long patientId;
 	private String patientName;
 	@Column(unique = true)
@@ -38,10 +38,13 @@ public class Patient {
 	@OneToOne(mappedBy = "patientId", cascade = CascadeType.ALL)
 	private Users userId;
 
-	@OneToMany(mappedBy = "patient")
+	private String resetPasswordToken;
+
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+
 	private List<Appointment> appointment;
 
-	@OneToMany(mappedBy = "patience")
+	@OneToMany(mappedBy = "patience", cascade = CascadeType.ALL)
 	private List<ContactUs> contactUs;
 
 }
