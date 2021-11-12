@@ -8,12 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import com.hellodoctor.constant.Constant;
+import com.hellodoctor.entities.Appointment;
 import com.hellodoctor.entities.Patient;
 import com.hellodoctor.entities.Users;
+import com.hellodoctor.exception.EmailException;
 import com.hellodoctor.exception.RecordNotFoundException;
+import com.hellodoctor.repository.AppointmentRepository;
 import com.hellodoctor.repository.PatientRepository;
 import com.hellodoctor.repository.UsersRepository;
 import com.hellodoctor.requestdto.PatientRequestDto;
+import com.hellodoctor.responsedto.AppointmentResponceDto;
 import com.hellodoctor.responsedto.PatientResponseDto;
 import com.hellodoctor.services.PatientService;
 
@@ -29,11 +33,19 @@ public class PatientServicesImpl implements PatientService {
 	@Autowired
 	private UsersRepository usersRipository;
 
-	
+	@Autowired
+	private AppointmentRepository appointmentRepository;
+
 	@Override
 	public PatientResponseDto savePatient(PatientRequestDto patientRequestDto) {
 
 		log.info("start savePatient serviceImpl method");
+		Patient existsPatient = patientRepository.findByPatientEmail(patientRequestDto.getPatientEmail());
+
+		if (ObjectUtils.isEmpty(existsPatient)) {
+			throw new EmailException("try to anther Email");
+		}
+
 		Patient patient = new Patient();
 		Users user = new Users();
 
@@ -41,14 +53,16 @@ public class PatientServicesImpl implements PatientService {
 		patient.setPatientEmail(patientRequestDto.getPatientEmail());
 		patient.setPatientMobileNumber(patientRequestDto.getPatientMobileNumber());
 		patient.setRegisterDate(new Date());
-		patient.setPatientPassword((Base64.getEncoder().encodeToString(patientRequestDto.getPatientPassword().toString().getBytes())));
+		patient.setPatientPassword(
+				(Base64.getEncoder().encodeToString(patientRequestDto.getPatientPassword().toString().getBytes())));
 		patient.setRole(Constant.PATIENTROLE);
 
 		log.info("Persisting patient data into database");
 		Patient savePatient = patientRepository.save(patient);
 		user.setPatientId(savePatient);
 		user.setEmail(patientRequestDto.getPatientEmail());
-		user.setPassword((Base64.getEncoder().encodeToString(patientRequestDto.getPatientPassword().toString().getBytes())));
+		user.setPassword(
+				(Base64.getEncoder().encodeToString(patientRequestDto.getPatientPassword().toString().getBytes())));
 		user.setMobile(patientRequestDto.getPatientMobileNumber());
 		user.setRole(patient.getRole());
 
@@ -112,7 +126,7 @@ public class PatientServicesImpl implements PatientService {
 		patientResponseDto.setRegisterDate(DbPatient.getRegisterDate());
 		patientResponseDto.setUpdatedDate(DbPatient.getUpdatedDate());
 		patientResponseDto.setRole(DbPatient.getRole());
-		
+
 		log.info("return getPatientById serviceImpl method");
 		return patientResponseDto;
 	}
@@ -195,5 +209,42 @@ public class PatientServicesImpl implements PatientService {
 
 		log.info("start deletePatientById serviceImpl method");
 		patientRepository.deleteById(patientId);
+	}
+
+	@Override
+	public List<AppointmentResponceDto> getAppointment(String email) {
+		log.info("start getAppointmentByPatientEmail serviceImpl method");
+		Patient patient = patientRepository.findByPatientEmail(email);
+
+		if (ObjectUtils.isEmpty(patient)) {
+			log.info("getAppointmentByPatientEmail patient not found");
+			throw new RecordNotFoundException("patient not found");
+		}
+		List<AppointmentResponceDto> appointmentResponceDto = new ArrayList<>();
+
+		log.info(" fetching appointment ");
+		List<Appointment> appointmentDetails = appointmentRepository.findByPatientEmail(patient.getPatientEmail());
+		log.info("getAppointmentByPatientEmail appointment not found");
+		if (ObjectUtils.isEmpty(appointmentDetails)) {
+			throw new RecordNotFoundException("appointment is empty");
+		}
+		for (Appointment appDeatiels : appointmentDetails) {
+			AppointmentResponceDto dto = new AppointmentResponceDto();
+			dto.setDoctorId(appDeatiels.getDoctor().getDoctorId());
+			dto.setPatientId(appDeatiels.getPatient().getPatientId());
+			dto.setAppointmentId(appDeatiels.getAppointmentId());
+			dto.setPatientEmail(appDeatiels.getPatientEmail());
+			dto.setPatientName(appDeatiels.getPatientName());
+			dto.setPatientMobileNo(appDeatiels.getPatientMobileNo());
+			dto.setDoctorName(appDeatiels.getDoctorName());
+			dto.setDoctorEmail(appDeatiels.getDoctorEmail());
+			dto.setAppointmentDate(appDeatiels.getAppointmentDate());
+			dto.setTime(appDeatiels.getTime());
+			dto.setFile(appDeatiels.getFile());
+			appointmentResponceDto.add(dto);
+		}
+
+		log.info(" return getAppointmentByPatientEmail serviceImpl method ");
+		return appointmentResponceDto;
 	}
 }

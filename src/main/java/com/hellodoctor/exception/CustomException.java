@@ -54,5 +54,12 @@ public class CustomException {
 		ErrorMassege massege = new ErrorMassege("Could not create the directory", e.getMessage(), HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<Object>(massege, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(EmailException.class)
+	public ResponseEntity<Object> handleEmailException(EmailException e) {
+		ErrorMassege massege = new ErrorMassege("This Email has already exists", e.getMessage(), HttpStatus.NOT_FOUND);
+//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(massege);
+		return new ResponseEntity<Object>(massege, HttpStatus.NOT_FOUND);
+	}
 
 }

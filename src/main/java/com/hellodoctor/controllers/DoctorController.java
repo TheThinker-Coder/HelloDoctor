@@ -1,6 +1,7 @@
 package com.hellodoctor.controllers;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.hellodoctor.constant.Constant;
 import com.hellodoctor.entities.Doctor;
 import com.hellodoctor.exception.BusinessException;
@@ -19,7 +21,6 @@ import com.hellodoctor.exception.ControllerException;
 import com.hellodoctor.requestdto.DoctorUpdateDto;
 import com.hellodoctor.requestdto.RequestDto;
 import com.hellodoctor.responsedto.AppointmentResponceDto;
-import com.hellodoctor.services.AppointmentSerevice;
 import com.hellodoctor.services.HelloDoctorServices;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 public class DoctorController {
 	@Autowired
 	private HelloDoctorServices helloDoctorServices;
-
-	@Autowired
-	private AppointmentSerevice appointmentService;
 
 	@GetMapping("/")
 	public ResponseEntity<String> home() {
@@ -146,9 +144,9 @@ public class DoctorController {
 	}
 //	get all doctor appointment
 
-	@GetMapping("/getAppointment/{byPatientEmail}")
-	public List<AppointmentResponceDto> getAppointment(@PathVariable("byPatientEmail") String byPatientEmail) {
-		return appointmentService.getAppointmentByPatientEmail(byPatientEmail);
+	@GetMapping("/getAppointment/{doctorEmail}")
+	public List<AppointmentResponceDto> getAppointment(@PathVariable("doctorEmail") String patientEmail) {
+		return helloDoctorServices.getAppointment(patientEmail);
 
 	}
 

@@ -1,5 +1,6 @@
 package com.hellodoctor.servicesimplements;
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import com.hellodoctor.constant.Constant;
+import com.hellodoctor.entities.Appointment;
 import com.hellodoctor.entities.Doctor;
 import com.hellodoctor.entities.HospitalAddress;
 import com.hellodoctor.entities.HospitalsDetails;
@@ -15,12 +17,14 @@ import com.hellodoctor.entities.Users;
 import com.hellodoctor.exception.BusinessException;
 import com.hellodoctor.exception.EmptyInputException;
 import com.hellodoctor.exception.RecordNotFoundException;
+import com.hellodoctor.repository.AppointmentRepository;
 import com.hellodoctor.repository.DoctorRepository;
 import com.hellodoctor.repository.HospitalAddressRepository;
 import com.hellodoctor.repository.HospitalsDetailsRepository;
 import com.hellodoctor.repository.UsersRepository;
 import com.hellodoctor.requestdto.DoctorUpdateDto;
 import com.hellodoctor.requestdto.RequestDto;
+import com.hellodoctor.responsedto.AppointmentResponceDto;
 import com.hellodoctor.services.HelloDoctorServices;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,6 +39,9 @@ public class HelloDoctorServicesImplements implements HelloDoctorServices {
 	private HospitalsDetailsRepository hospitalsDetailsRepository;
 	@Autowired
 	private HospitalAddressRepository hospitalAddressRepository;
+	
+	@Autowired
+	private AppointmentRepository appointmentRepository;
 
 	// doctorUpdateService
 	@Override
@@ -323,5 +330,35 @@ public class HelloDoctorServicesImplements implements HelloDoctorServices {
 
 	// for getting hospital details via address mapping end
 
+	}
+
+	@Override
+	public List<AppointmentResponceDto> getAppointment(String email) {
+		Doctor doctor = doctorRepository.findBydoctorEmail(email);
+List<AppointmentResponceDto> appointmentResponceDto = new ArrayList<>();
+		
+		log.info(" fetching appointment ");
+		List<Appointment> appointmentDetails = appointmentRepository.findByDoctorEmail(doctor.getDoctorEmail());
+		if(ObjectUtils.isEmpty(appointmentDetails)) {
+			throw new RecordNotFoundException("appointment is empty");
+		}
+		for(Appointment appDeatiels :appointmentDetails) {
+			AppointmentResponceDto dto = new AppointmentResponceDto();
+			dto.setDoctorId(appDeatiels.getDoctor().getDoctorId());
+			dto.setPatientId(appDeatiels.getPatient().getPatientId());
+			dto.setAppointmentId(appDeatiels.getAppointmentId());
+			dto.setPatientEmail(appDeatiels.getPatientEmail());
+			dto.setPatientName(appDeatiels.getPatientName());
+			dto.setPatientMobileNo(appDeatiels.getPatientMobileNo());
+			dto.setDoctorName(appDeatiels.getDoctorName());
+			dto.setDoctorEmail(appDeatiels.getDoctorEmail());
+			dto.setAppointmentDate(appDeatiels.getAppointmentDate());
+			dto.setTime(appDeatiels.getTime());
+			dto.setFile(appDeatiels.getFile());
+			appointmentResponceDto.add(dto);
+		}
+		
+		log.info(" return getAppointmentByPatientEmail serviceImpl method ");
+		return appointmentResponceDto;
 	}
 }

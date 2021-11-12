@@ -2,6 +2,7 @@ package com.hellodoctor.services;
 
 import java.util.List;
 import com.hellodoctor.requestdto.PatientRequestDto;
+import com.hellodoctor.responsedto.AppointmentResponceDto;
 import com.hellodoctor.responsedto.PatientResponseDto;
 
 public interface PatientService {
@@ -17,4 +18,6 @@ public interface PatientService {
 	public void deletePatientById(Long patientId);
 
 	public PatientResponseDto getPatientByPatientEmail(String patientEmail);
+	
+	public List<AppointmentResponceDto> getAppointment(String email);
 }

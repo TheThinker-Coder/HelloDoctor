@@ -7,6 +7,7 @@ import com.hellodoctor.entities.HospitalAddress;
 import com.hellodoctor.entities.HospitalsDetails;
 import com.hellodoctor.requestdto.DoctorUpdateDto;
 import com.hellodoctor.requestdto.RequestDto;
+import com.hellodoctor.responsedto.AppointmentResponceDto;
 
 public interface HelloDoctorServices {
 	public Doctor addDoctor(RequestDto requestDto);
@@ -36,4 +37,6 @@ public interface HelloDoctorServices {
 	public Doctor getByResetPasswordToken(String token);
 
 	public void updatePassword(Doctor doctor, String newPassword);
+	
+	public List<AppointmentResponceDto> getAppointment(String email);
 }

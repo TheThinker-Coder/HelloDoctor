@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hellodoctor.requestdto.PatientRequestDto;
 import com.hellodoctor.responsedto.AppointmentResponceDto;
 import com.hellodoctor.responsedto.PatientResponseDto;
-import com.hellodoctor.services.AppointmentSerevice;
 import com.hellodoctor.services.PatientService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,54 +29,57 @@ public class PatientController {
 	@Autowired
 	private PatientService patientService;
 
-	@Autowired
-	private AppointmentSerevice appointmentService;
-
+//	save patients api calling
 	@PostMapping("/register")
 	public PatientResponseDto savePatient(@RequestBody PatientRequestDto patientRequestDto) {
-		log.info("controller savePatient method");
+		log.info("calling patient controller savePatient method");
 		return patientService.savePatient(patientRequestDto);
-
 	}
 
+//	get all patients api calling
 	@GetMapping("/getAllPatient")
 	public List<PatientResponseDto> getAllPatient() {
-
-		log.info("controller getAllPatient method");
+		log.info("calling patient controller getAllPatient method");
 		return patientService.getAllPatient();
 
 	}
 
+//	get Patient by patient id api calling
 	@GetMapping("/getPatientById/{patientId}")
 	public PatientResponseDto getPatientById(@PathVariable("patientId") Long patientId) {
-		log.info("controller getPatientById");
+		log.info("calling patient controller getPatientById method");
 		return patientService.getPatientById(patientId);
 	}
 
+//	get patient by patient email api calling
 	@GetMapping("/getPatientByEmail/{patientEmail}")
 	public PatientResponseDto getPatientByEmail(@PathVariable("patientEmail") String patientEmail) {
-		log.info("controller getPatientByEmail");
+		log.info("calling patient controller getPatientByEmail method");
 		return patientService.getPatientByPatientEmail(patientEmail);
 
 	}
 
+//	update patient by patient id api calling
 	@PutMapping("/updatePatient/{patientId}")
 	public PatientResponseDto updatePatient(@RequestBody PatientRequestDto patientRequestDto,
 			@PathVariable("patientId") long patientId) {
-		log.info("controller updatePatient");
+		log.info("calling patient controller updatePatient method");
 		return patientService.updatePatient(patientId, patientRequestDto);
 	}
 
+//	patient delete by patient id api calling
 	@DeleteMapping("/deletePatientById/{patientId}")
 	public ResponseEntity<?> deletePatientById(@PathVariable("patientId") Long patientId) {
-		log.info("controller deletePatientById");
+		log.info("calling patient controller deletePatientById method");
 		patientService.deletePatientById(patientId);
 		return new ResponseEntity<>("this patient id deleted  " + patientId, HttpStatus.OK);
 	}
 
-	@GetMapping("/getAppointment/{byPatientEmail}")
-	public List<AppointmentResponceDto> getAppointment(@PathVariable("byPatientEmail") String byPatientEmail) {
-		return appointmentService.getAppointmentByPatientEmail(byPatientEmail);
+//	get appointment by patient email api calling
+	@GetMapping("/getAppointment/{patientEmail}")
+	public List<AppointmentResponceDto> getAppointment(@PathVariable("patientEmail") String patientEmail) {
+		log.info("calling patient controller getAppointment method");
+		return patientService.getAppointment(patientEmail);
 
 	}
 
