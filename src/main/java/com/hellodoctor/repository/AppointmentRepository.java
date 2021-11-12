@@ -8,6 +8,8 @@ import com.hellodoctor.entities.Appointment;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-	List<Appointment> findByPatientEmail(String byPatientEmail);
+	List<Appointment> findByPatientEmail(String patientEmail);
+
+	List<Appointment> findByDoctorEmail(String doctorEmail);
 
 }

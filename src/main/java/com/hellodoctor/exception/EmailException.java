@@ -1,10 +1,11 @@
 package com.hellodoctor.exception;
 
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-
-
 public class EmailException extends RuntimeException {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public EmailException() {
 		super();
