@@ -1,4 +1,4 @@
-package com.hellodoctor.servicesimplements;
+package com.hellodoctor.servicesImpl;
 
 import java.util.ArrayList;
 import java.util.Base64;

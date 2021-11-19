@@ -1,4 +1,4 @@
-package com.hellodoctor.util;
+package com.hellodoctor.helper;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

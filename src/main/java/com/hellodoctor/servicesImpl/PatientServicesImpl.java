@@ -1,9 +1,11 @@
-package com.hellodoctor.servicesimplements;
+package com.hellodoctor.servicesImpl;
 
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -42,7 +44,7 @@ public class PatientServicesImpl implements PatientService {
 		log.info("start savePatient serviceImpl method");
 		Patient existsPatient = patientRepository.findByPatientEmail(patientRequestDto.getPatientEmail());
 
-		if (ObjectUtils.isEmpty(existsPatient)) {
+		if (!ObjectUtils.isEmpty(existsPatient)) {
 			throw new EmailException("try to anther Email");
 		}
 
@@ -58,25 +60,29 @@ public class PatientServicesImpl implements PatientService {
 		patient.setRole(Constant.PATIENTROLE);
 
 		log.info("Persisting patient data into database");
-		Patient savePatient = patientRepository.save(patient);
-		user.setPatientId(savePatient);
+		
+		user.setPatientId(patient);
 		user.setEmail(patientRequestDto.getPatientEmail());
 		user.setPassword(
 				(Base64.getEncoder().encodeToString(patientRequestDto.getPatientPassword().toString().getBytes())));
 		user.setMobile(patientRequestDto.getPatientMobileNumber());
 		user.setRole(patient.getRole());
 
+		Patient savePatient = patientRepository.save(patient);
 		log.info("Persisting user data into database");
 		usersRipository.save(user);
 
 		PatientResponseDto patientResponseDto = new PatientResponseDto();
-		patientResponseDto.setPatientId(savePatient.getPatientId());
-		patientResponseDto.setPatientName(savePatient.getPatientName());
-		patientResponseDto.setPatientEmail(savePatient.getPatientEmail());
-		patientResponseDto.setPatientMobileNumber(savePatient.getPatientMobileNumber());
-		patientResponseDto.setPatientPassword(savePatient.getPatientPassword());
-		patientResponseDto.setRegisterDate(savePatient.getRegisterDate());
-		patientResponseDto.setRole(savePatient.getRole());
+		BeanUtils.copyProperties(savePatient, patientResponseDto);
+		
+		
+//		patientResponseDto.setPatientId(savePatient.getPatientId());
+//		patientResponseDto.setPatientName(patient.getPatientName());
+//		patientResponseDto.setPatientEmail(patient.getPatientEmail());
+//		patientResponseDto.setPatientMobileNumber(patient.getPatientMobileNumber());
+//		patientResponseDto.setPatientPassword(patient.getPatientPassword());
+//		patientResponseDto.setRegisterDate(patient.getRegisterDate());
+//		patientResponseDto.setRole(patient.getRole());
 
 		log.info("return savePatient serviceImpl method");
 		return patientResponseDto;
@@ -90,17 +96,22 @@ public class PatientServicesImpl implements PatientService {
 		List<PatientResponseDto> patientResponseDto = new ArrayList<>();
 
 		for (Patient patient : allPatients) {
+			
 			PatientResponseDto dto = new PatientResponseDto();
-			dto.setPatientId(patient.getPatientId());
-			dto.setPatientName(patient.getPatientName());
-			dto.setPatientEmail(patient.getPatientEmail());
-			dto.setPatientMobileNumber(patient.getPatientMobileNumber());
-			dto.setRole(patient.getRole());
-			dto.setRegisterDate(patient.getRegisterDate());
-			dto.setUpdatedDate(patient.getUpdatedDate());
-			dto.setPatientPassword(patient.getPatientPassword());
+			BeanUtils.copyProperties(patient, dto);
+			
+//			dto.setPatientId(patient.getPatientId());
+//			dto.setPatientName(patient.getPatientName());
+//			dto.setPatientEmail(patient.getPatientEmail());
+//			dto.setPatientMobileNumber(patient.getPatientMobileNumber());
+//			dto.setRole(patient.getRole());
+//			dto.setRegisterDate(patient.getRegisterDate());
+//			dto.setUpdatedDate(patient.getUpdatedDate());
+//			dto.setPatientPassword(patient.getPatientPassword());
 			patientResponseDto.add(dto);
+			
 		}
+		
 
 		log.info("return getAllPatient serviceImpl method");
 		return patientResponseDto;
@@ -118,14 +129,16 @@ public class PatientServicesImpl implements PatientService {
 		}
 
 		PatientResponseDto patientResponseDto = new PatientResponseDto();
+		BeanUtils.copyProperties(DbPatient, patientResponseDto);
+		
 
-		patientResponseDto.setPatientId(DbPatient.getPatientId());
-		patientResponseDto.setPatientName(DbPatient.getPatientName());
-		patientResponseDto.setPatientMobileNumber(DbPatient.getPatientMobileNumber());
-		patientResponseDto.setPatientEmail(DbPatient.getPatientEmail());
-		patientResponseDto.setRegisterDate(DbPatient.getRegisterDate());
-		patientResponseDto.setUpdatedDate(DbPatient.getUpdatedDate());
-		patientResponseDto.setRole(DbPatient.getRole());
+//		patientResponseDto.setPatientId(DbPatient.getPatientId());
+//		patientResponseDto.setPatientName(DbPatient.getPatientName());
+//		patientResponseDto.setPatientMobileNumber(DbPatient.getPatientMobileNumber());
+//		patientResponseDto.setPatientEmail(DbPatient.getPatientEmail());
+//		patientResponseDto.setRegisterDate(DbPatient.getRegisterDate());
+//		patientResponseDto.setUpdatedDate(DbPatient.getUpdatedDate());
+//		patientResponseDto.setRole(DbPatient.getRole());
 
 		log.info("return getPatientById serviceImpl method");
 		return patientResponseDto;
@@ -144,14 +157,16 @@ public class PatientServicesImpl implements PatientService {
 		}
 
 		PatientResponseDto patientResponseDto = new PatientResponseDto();
-		patientResponseDto.setPatientId(patient.getPatientId());
-		patientResponseDto.setPatientName(patient.getPatientName());
-		patientResponseDto.setPatientEmail(patient.getPatientEmail());
-		patientResponseDto.setPatientMobileNumber(patient.getPatientMobileNumber());
-		patientResponseDto.setPatientPassword(patient.getPatientPassword());
-		patientResponseDto.setRole(patient.getRole());
-		patientResponseDto.setRegisterDate(patient.getRegisterDate());
-		patientResponseDto.setUpdatedDate(patient.getUpdatedDate());
+		BeanUtils.copyProperties(patient, patientResponseDto);
+		
+//		patientResponseDto.setPatientId(patient.getPatientId());
+//		patientResponseDto.setPatientName(patient.getPatientName());
+//		patientResponseDto.setPatientEmail(patient.getPatientEmail());
+//		patientResponseDto.setPatientMobileNumber(patient.getPatientMobileNumber());
+//		patientResponseDto.setPatientPassword(patient.getPatientPassword());
+//		patientResponseDto.setRole(patient.getRole());
+//		patientResponseDto.setRegisterDate(patient.getRegisterDate());
+//		patientResponseDto.setUpdatedDate(patient.getUpdatedDate());
 
 		log.info("return getPatientByPatientEmail serviceImpl method");
 		return patientResponseDto;
@@ -180,7 +195,8 @@ public class PatientServicesImpl implements PatientService {
 		dBpatient.setPatientName(patientRequestDto.getPatientName());
 		dBpatient.setPatientMobileNumber(patientRequestDto.getPatientMobileNumber());
 		dBpatient.setPatientEmail(patientRequestDto.getPatientEmail());
-		dBpatient.setPatientPassword(patientRequestDto.getPatientPassword());
+		dBpatient.setPatientPassword(Base64.getEncoder().encodeToString(patientRequestDto.getPatientPassword()
+				.toString().getBytes()));
 		dBpatient.setUpdatedDate(new Date());
 
 		Patient updatePatient = patientRepository.save(dBpatient);
@@ -191,14 +207,15 @@ public class PatientServicesImpl implements PatientService {
 
 		usersRipository.save(user);
 
-		patientResponseDto.setPatientId(updatePatient.getPatientId());
-		patientResponseDto.setPatientEmail(updatePatient.getPatientEmail());
-		patientResponseDto.setPatientName(updatePatient.getPatientName());
-		patientResponseDto.setPatientMobileNumber(updatePatient.getPatientMobileNumber());
-		patientResponseDto.setRole(updatePatient.getRole());
-		patientResponseDto.setRegisterDate(updatePatient.getRegisterDate());
-		patientResponseDto.setUpdatedDate(updatePatient.getUpdatedDate());
-		patientResponseDto.setPatientPassword(updatePatient.getPatientPassword());
+		BeanUtils.copyProperties(updatePatient, patientResponseDto);
+//		patientResponseDto.setPatientId(updatePatient.getPatientId());
+//		patientResponseDto.setPatientEmail(updatePatient.getPatientEmail());
+//		patientResponseDto.setPatientName(updatePatient.getPatientName());
+//		patientResponseDto.setPatientMobileNumber(updatePatient.getPatientMobileNumber());
+//		patientResponseDto.setRole(updatePatient.getRole());
+//		patientResponseDto.setRegisterDate(updatePatient.getRegisterDate());
+//		patientResponseDto.setUpdatedDate(updatePatient.getUpdatedDate());
+//		patientResponseDto.setPatientPassword(updatePatient.getPatientPassword());
 
 		log.info("return updatePatient serviceImpl method");
 		return patientResponseDto;
@@ -230,17 +247,19 @@ public class PatientServicesImpl implements PatientService {
 		}
 		for (Appointment appDeatiels : appointmentDetails) {
 			AppointmentResponceDto dto = new AppointmentResponceDto();
+			BeanUtils.copyProperties(appDeatiels, dto);
+			
 			dto.setDoctorId(appDeatiels.getDoctor().getDoctorId());
 			dto.setPatientId(appDeatiels.getPatient().getPatientId());
-			dto.setAppointmentId(appDeatiels.getAppointmentId());
-			dto.setPatientEmail(appDeatiels.getPatientEmail());
-			dto.setPatientName(appDeatiels.getPatientName());
-			dto.setPatientMobileNo(appDeatiels.getPatientMobileNo());
-			dto.setDoctorName(appDeatiels.getDoctorName());
-			dto.setDoctorEmail(appDeatiels.getDoctorEmail());
-			dto.setAppointmentDate(appDeatiels.getAppointmentDate());
-			dto.setTime(appDeatiels.getTime());
-			dto.setFile(appDeatiels.getFile());
+//			dto.setAppointmentId(appDeatiels.getAppointmentId());
+//			dto.setPatientEmail(appDeatiels.getPatientEmail());
+//			dto.setPatientName(appDeatiels.getPatientName());
+//			dto.setPatientMobileNo(appDeatiels.getPatientMobileNo());
+//			dto.setDoctorName(appDeatiels.getDoctorName());
+//			dto.setDoctorEmail(appDeatiels.getDoctorEmail());
+//			dto.setAppointmentDate(appDeatiels.getAppointmentDate());
+//			dto.setTime(appDeatiels.getTime());
+//			dto.setFile(appDeatiels.getFile());
 			appointmentResponceDto.add(dto);
 		}
 

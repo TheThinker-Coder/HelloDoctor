@@ -1,4 +1,4 @@
-package com.hellodoctor.helper;
+package com.hellodoctor.security;
 
 import java.io.IOException;
 

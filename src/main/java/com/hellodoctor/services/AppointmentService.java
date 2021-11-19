@@ -5,7 +5,7 @@ import java.util.List;
 import com.hellodoctor.requestdto.AppointmentRequestDto;
 import com.hellodoctor.responsedto.AppointmentResponceDto;
 
-public interface AppointmentSerevice {
+public interface AppointmentService {
 
 	AppointmentResponceDto saveAppointment(AppointmentRequestDto appointmentRequestDto);
 

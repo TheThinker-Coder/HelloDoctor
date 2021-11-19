@@ -1,8 +1,9 @@
-package com.hellodoctor.servicesimplements;
+package com.hellodoctor.servicesImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -18,13 +19,13 @@ import com.hellodoctor.repository.DoctorRepository;
 import com.hellodoctor.repository.PatientRepository;
 import com.hellodoctor.requestdto.AppointmentRequestDto;
 import com.hellodoctor.responsedto.AppointmentResponceDto;
-import com.hellodoctor.services.AppointmentSerevice;
+import com.hellodoctor.services.AppointmentService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class AppointmentServiceImpl implements AppointmentSerevice {
+public class AppointmentServiceImpl implements AppointmentService {
 
 	
 	@Autowired
@@ -70,17 +71,18 @@ public class AppointmentServiceImpl implements AppointmentSerevice {
 		
 		log.info(" save appointment "+appointmentRequestDto.getDoctorEmail());
 		Appointment saveAppointment = appointmentRepository.save(appointment);
-		
-		appointmentResponceDto.setAppointmentId(saveAppointment.getAppointmentId());
+		BeanUtils.copyProperties(saveAppointment, appointmentResponceDto);
+		log.info(" change object entity to response ");
+//		appointmentResponceDto.setAppointmentId(saveAppointment.getAppointmentId());
+//		appointmentResponceDto.setDoctorEmail(saveAppointment.getDoctorEmail());
+//		appointmentResponceDto.setDoctorName(saveAppointment.getDoctorName());
+//		appointmentResponceDto.setPatientName(saveAppointment.getPatientName());
+//		appointmentResponceDto.setPatientEmail(saveAppointment.getPatientEmail());
+//		appointmentResponceDto.setPatientMobileNo(saveAppointment.getPatientMobileNo());
+//		appointmentResponceDto.setAppointmentDate(saveAppointment.getAppointmentDate());;
 		appointmentResponceDto.setDoctorId(saveAppointment.getDoctor().getDoctorId());
-		appointmentResponceDto.setDoctorEmail(saveAppointment.getDoctorEmail());
-		appointmentResponceDto.setDoctorName(saveAppointment.getDoctorName());
-		appointmentResponceDto.setPatientId(saveAppointment.getPatient().getPatientId());
-		appointmentResponceDto.setPatientName(saveAppointment.getPatientName());
-		appointmentResponceDto.setPatientEmail(saveAppointment.getPatientEmail());
-		appointmentResponceDto.setPatientMobileNo(saveAppointment.getPatientMobileNo());
-		appointmentResponceDto.setAppointmentDate(saveAppointment.getAppointmentDate());;
 		appointmentResponceDto.setTime(appointmentRequestDto.getTime());
+		appointmentResponceDto.setPatientId(saveAppointment.getPatient().getPatientId());
 		UriComponentsBuilder filePath = ServletUriComponentsBuilder.fromCurrentContextPath().path("/image/").path(appointmentRequestDto.getFileAttech());
 		appointmentResponceDto.setFile(filePath.toUriString());
 		log.info(" return saveAppointment serviceImpl method "+appointmentRequestDto.getDoctorEmail());
@@ -99,17 +101,19 @@ public class AppointmentServiceImpl implements AppointmentSerevice {
 		}
 		for(Appointment appDeatiels :appointmentDetails) {
 			AppointmentResponceDto dto = new AppointmentResponceDto();
+			BeanUtils.copyProperties(appDeatiels, dto);
+			
 			dto.setDoctorId(appDeatiels.getDoctor().getDoctorId());
 			dto.setPatientId(appDeatiels.getPatient().getPatientId());
-			dto.setAppointmentId(appDeatiels.getAppointmentId());
-			dto.setPatientEmail(appDeatiels.getPatientEmail());
-			dto.setPatientName(appDeatiels.getPatientName());
-			dto.setPatientMobileNo(appDeatiels.getPatientMobileNo());
-			dto.setDoctorName(appDeatiels.getDoctorName());
-			dto.setDoctorEmail(appDeatiels.getDoctorEmail());
-			dto.setAppointmentDate(appDeatiels.getAppointmentDate());
-			dto.setTime(appDeatiels.getTime());
-			dto.setFile(appDeatiels.getFile());
+//			dto.setAppointmentId(appDeatiels.getAppointmentId());
+//			dto.setPatientEmail(appDeatiels.getPatientEmail());
+//			dto.setPatientName(appDeatiels.getPatientName());
+//			dto.setPatientMobileNo(appDeatiels.getPatientMobileNo());
+//			dto.setDoctorName(appDeatiels.getDoctorName());
+//			dto.setDoctorEmail(appDeatiels.getDoctorEmail());
+//			dto.setAppointmentDate(appDeatiels.getAppointmentDate());
+//			dto.setTime(appDeatiels.getTime());
+//			dto.setFile(appDeatiels.getFile());
 			appointmentResponceDto.add(dto);
 		}
 		

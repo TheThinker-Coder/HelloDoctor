@@ -1,4 +1,4 @@
-package com.hellodoctor.servicesimplements;
+package com.hellodoctor.servicesImpl;
 
 import java.util.Base64;
 
@@ -9,9 +9,9 @@ import org.springframework.util.ObjectUtils;
 
 import com.hellodoctor.entities.Users;
 import com.hellodoctor.exception.InvalidDataException;
-import com.hellodoctor.helper.JwtUtil;
 import com.hellodoctor.repository.UsersRepository;
 import com.hellodoctor.responsedto.JwtResponseDto;
+import com.hellodoctor.security.JwtUtil;
 import com.hellodoctor.services.UsersService;
 
 import lombok.extern.log4j.Log4j2;
@@ -45,11 +45,13 @@ public class UsersServiceImpl implements UsersService {
 		}
 		
 		UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(user.getEmail());
+		userDetails.getAuthorities();
 		log.info("generate token");
 		String token = jwtUtil.generateToken(userDetails);
 		
 		JwtResponseDto dto = new JwtResponseDto();
 		dto.setJwtToken(token);
+		dto.setRole(user.getRole());
 		return dto;
 	}
 

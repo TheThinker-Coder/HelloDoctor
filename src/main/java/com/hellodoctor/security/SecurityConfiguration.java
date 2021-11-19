@@ -1,4 +1,4 @@
-package com.hellodoctor.configuration;
+package com.hellodoctor.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.hellodoctor.helper.JwtAuthenticationFilter;
-import com.hellodoctor.servicesimplements.UserDetailsServiceImpl;
+import com.hellodoctor.servicesImpl.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity

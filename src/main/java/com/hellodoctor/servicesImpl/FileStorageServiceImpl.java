@@ -1,4 +1,4 @@
-package com.hellodoctor.servicesimplements;
+package com.hellodoctor.servicesImpl;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -15,8 +15,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hellodoctor.exception.FileStorageException;
+import com.hellodoctor.helper.FileStorageProperties;
 import com.hellodoctor.services.FileStorageService;
-import com.hellodoctor.util.FileStorageProperties;
 
 import javassist.NotFoundException;
 

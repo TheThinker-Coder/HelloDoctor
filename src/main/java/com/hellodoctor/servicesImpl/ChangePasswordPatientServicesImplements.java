@@ -1,49 +1,44 @@
-package com.hellodoctor.servicesimplements;
+package com.hellodoctor.servicesImpl;
 
 import java.util.Base64;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-
 import com.hellodoctor.constant.Constant;
 import com.hellodoctor.entities.Doctor;
+import com.hellodoctor.entities.Patient;
 import com.hellodoctor.entities.Users;
 import com.hellodoctor.exception.EmptyInputException;
 import com.hellodoctor.exception.RecordNotFoundException;
-import com.hellodoctor.repository.DoctorRepository;
+import com.hellodoctor.repository.PatientRepository;
 import com.hellodoctor.repository.UsersRepository;
 import com.hellodoctor.responsedto.ChangePasswordDto;
-import com.hellodoctor.services.ChangePasswordDoctorServices;
-
+import com.hellodoctor.services.ChangePasswordPatientServices;
 import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
-public class ChangePasswordDoctorImplements implements ChangePasswordDoctorServices {
+@Slf4j
+public class ChangePasswordPatientServicesImplements implements ChangePasswordPatientServices {
 	@Autowired
-	private DoctorRepository doctorRepository;
-
+	private PatientRepository patientRepository;
 	@Autowired
 	private UsersRepository usersRepository;
 
-	@Override
 	public Boolean changePassword(ChangePasswordDto changePasswordDto) {
 		log.info("Change Password Service Started");
 		String password = null;
-		Doctor doctorEmail = doctorRepository.findBydoctorEmail(changePasswordDto.getEmail());
-		Users findById = usersRepository.findById(doctorEmail.getUserId().getUserId()).orElse(null);
+		Patient patientEmail = patientRepository.findByPatientEmail(changePasswordDto.getEmail());
+		Users findById = usersRepository.findById(patientEmail.getUserId().getUserId()).orElse(null);
 
-		if (doctorEmail.getDoctorPassword().equals(changePasswordDto.getOldpassword())
+		if (patientEmail.getPatientPassword().equals(changePasswordDto.getOldpassword())
 				&& changePasswordDto.getNewpassword().equals(changePasswordDto.getConfirmpassword())) {
 
-			if (ObjectUtils.isEmpty(doctorEmail)) {
-				throw new RecordNotFoundException("current docotor email" + doctorEmail);
+			if (ObjectUtils.isEmpty(patientEmail)) {
+				throw new RecordNotFoundException("current docotor email" + patientEmail);
 			} else {
-				if (doctorEmail != null) {
-					doctorEmail.setDoctorPassword(Base64.getEncoder()
+				if (patientEmail != null) {
+					patientEmail.setPatientPassword(Base64.getEncoder()
 							.encodeToString(changePasswordDto.getConfirmpassword().toString().getBytes()));
-					doctorRepository.save(doctorEmail); // able to save password in doctor
+					patientRepository.save(patientEmail); // able to save password in doctor
 				}
 				if (findById != null) {
 					// Users users = new Users();

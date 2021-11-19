@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.hellodoctor.exception.EmptyInputException;
 import com.hellodoctor.requestdto.AppointmentRequestDto;
 import com.hellodoctor.responsedto.AppointmentResponceDto;
-import com.hellodoctor.services.AppointmentSerevice;
+import com.hellodoctor.services.AppointmentService;
 import com.hellodoctor.services.FileStorageService;
 
 @RestController
@@ -23,7 +23,7 @@ import com.hellodoctor.services.FileStorageService;
 public class AppointmentController {
 
 	@Autowired
-	private AppointmentSerevice appointmentService;
+	private AppointmentService appointmentService;
 
 	@Autowired
 	private FileStorageService fileStorageService;
