@@ -1,4 +1,4 @@
-package com.hellodoctor.requestdto;
+package com.hellodoctor.responsedto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequestDto {
+public class CaptchaResponse {
 
-	private String email;
-	private String password;
 	private Long captchaId;
+	private String captcha;
 }
+

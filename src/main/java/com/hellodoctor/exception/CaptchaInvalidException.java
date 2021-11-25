@@ -1,21 +1,22 @@
 package com.hellodoctor.exception;
 
-public class EmptyInputException extends RuntimeException {
+public class CaptchaInvalidException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public EmptyInputException() {
+	public CaptchaInvalidException() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public EmptyInputException(String message) {
+	public CaptchaInvalidException(String message) {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
+	
 	
 
 }

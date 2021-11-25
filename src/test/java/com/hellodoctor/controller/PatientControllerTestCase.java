@@ -37,6 +37,7 @@ import com.hellodoctor.requestdto.AppointmentRequestDto;
 import com.hellodoctor.requestdto.PatientRequestDto;
 import com.hellodoctor.requestdto.UserRequestDto;
 import com.hellodoctor.responsedto.AppointmentResponceDto;
+import com.hellodoctor.responsedto.CaptchaResponse;
 import com.hellodoctor.responsedto.JwtResponseDto;
 import com.hellodoctor.responsedto.PatientResponseDto;
 import com.hellodoctor.services.PatientService;
@@ -64,7 +65,8 @@ public class PatientControllerTestCase {
 	PatientResponseDto patientResponseDto = new PatientResponseDto();
 	UserRequestDto userRequestDto = new UserRequestDto();
 	JwtResponseDto jwtResponseDto = new JwtResponseDto();
-	private static String BEARERTOKEN = "Bearer ";
+	private static String BEARER_TOKEN = "Bearer ";
+	private static Long captchaId;
 
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -89,15 +91,31 @@ public class PatientControllerTestCase {
 	
 	@Test
 	@Order(1)
+	public void testCreateCaptcha() throws Exception {
+
+		MvcResult result = mockMvc.perform(get("/createCaptcha").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andReturn();
+		String response = result.getResponse().getContentAsString();
+
+		System.out.println("result " + response);
+		CaptchaResponse captchaResponse = mapper.readValue(response, CaptchaResponse.class);
+		captchaId = captchaResponse.getCaptchaId();
+		System.out.println("captchaId " + captchaId);
+
+	}
+	
+	@Test
+	@Order(2)
 	public void testLogin() throws Exception {
 		log.info("Login method for calling");
+		userRequestDto.setCaptchaId(captchaId);
 		MvcResult result = mockMvc.perform(post("/loginUser").contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(userRequestDto))).andExpect(status().isOk()).andReturn();
 		String response = result.getResponse().getContentAsString();
 
 		JwtResponseDto dto = mapper.readValue(response, JwtResponseDto.class);
-		BEARERTOKEN = BEARERTOKEN + dto.getJwtToken();
-		System.out.print("tokenLogin " + BEARERTOKEN);
+		BEARER_TOKEN = BEARER_TOKEN + dto.getJwtToken();
+		System.out.print("tokenLogin " + BEARER_TOKEN);
 	}
 
 	@Test
@@ -114,7 +132,7 @@ public class PatientControllerTestCase {
 	}
 
 	@Test
-	@Order(2)
+	@Order(3)
 	public void testGetAllPatient() throws Exception {
 		log.info("get all patient method for calling");
 
@@ -124,13 +142,13 @@ public class PatientControllerTestCase {
 		List<PatientResponseDto> list = Stream.of(patientResponseDto).collect(Collectors.toList());
 		when(patientService.getAllPatient()).thenReturn(list);
 
-		System.out.print("token = " + BEARERTOKEN);
-		mockMvc.perform(get("/patient/getAllPatient").header(HttpHeaders.AUTHORIZATION, BEARERTOKEN))
+		System.out.print("token = " + BEARER_TOKEN);
+		mockMvc.perform(get("/patient/getAllPatient").header(HttpHeaders.AUTHORIZATION, BEARER_TOKEN))
 				.andExpect(status().isOk());
 	}
 
 	@Test
-	@Order(3)
+	@Order(4)
 	public void testUpdatePatient() throws Exception {
 		log.info("update patient method for calling");
 
@@ -139,12 +157,12 @@ public class PatientControllerTestCase {
 
 		when(patientService.updatePatient(1l, patientRequestDto)).thenReturn(patientResponseDto);
 		mockMvc.perform(put("/patient/updatePatient/{patientId}", patientRequestDto.getPatientId())
-				.contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION, BEARERTOKEN)
+				.contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION, BEARER_TOKEN)
 				.content(mapper.writeValueAsString(patientResponseDto))).andExpect(status().isOk());
 	}
 
 	@Test
-	@Order(4)
+	@Order(5)
 	public void testGetPatientById() throws Exception {
 		log.info("get patient by id method for calling");
 
@@ -153,12 +171,12 @@ public class PatientControllerTestCase {
 
 		when(patientService.getPatientById(1l)).thenReturn(patientResponseDto);
 		mockMvc.perform(get("/patient/getPatientById/{patientId}", patientRequestDto.getPatientId())
-				.header(HttpHeaders.AUTHORIZATION, BEARERTOKEN)
+				.header(HttpHeaders.AUTHORIZATION, BEARER_TOKEN)
 				.content(mapper.writeValueAsString(patientResponseDto))).andExpect(status().isOk());
 	}
 
 	@Test
-	@Order(5)
+	@Order(6)
 	public void testGetPatientByEmail() throws Exception {
 		log.info("get patient by email method for calling");
 		
@@ -168,22 +186,22 @@ public class PatientControllerTestCase {
 		when(patientService.getPatientByPatientEmail(patientRequestDto.getPatientEmail()))
 				.thenReturn(patientResponseDto);
 		mockMvc.perform(get("/patient/getPatientByEmail/{patientEmail}", patientRequestDto.getPatientEmail())
-				.header(HttpHeaders.AUTHORIZATION, BEARERTOKEN)
+				.header(HttpHeaders.AUTHORIZATION, BEARER_TOKEN)
 				.content(mapper.writeValueAsString(patientResponseDto))).andExpect(status().isOk());
 	}
 
 	@Test
-	@Order(6)
+	@Order(7)
 	public void testDeletePatientById() throws Exception {
 		log.info("delete patient method for calling");
 
 		doNothing().when(patientService).deletePatientById(patientRequestDto.getPatientId());
 		mockMvc.perform(delete("/patient/deletePatientById/{patientId}", patientRequestDto.getPatientId())
-				.header(HttpHeaders.AUTHORIZATION, BEARERTOKEN)).andExpect(status().isOk());
+				.header(HttpHeaders.AUTHORIZATION, BEARER_TOKEN)).andExpect(status().isOk());
 	}
 
 	@Test
-	@Order(7)
+	@Order(8)
 	public void testGetAppointment() throws Exception {
 		log.info("get appointment method for calling");
 
@@ -205,7 +223,7 @@ public class PatientControllerTestCase {
 		when(patientService.getAppointment(patientRequestDto.getPatientEmail())).thenReturn(list);
 
 		mockMvc.perform(get("/patient/getAppointment/{patientEmail}", appointmentRequestDto.getPatientEmail())
-				.header(HttpHeaders.AUTHORIZATION, BEARERTOKEN)).andExpect(status().isOk());
+				.header(HttpHeaders.AUTHORIZATION, BEARER_TOKEN)).andExpect(status().isOk());
 	}
 
 }

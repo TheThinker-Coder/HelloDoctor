@@ -79,8 +79,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
 		.authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
 		.sessionManagement()
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests().
-		antMatchers("/patient/register", "/loginUser","/doctor/adddoctor","/appointment/saveAppointment",
-				"/appointment/getAppointment/{byPatientEmail}","/hospital/addhospital")
+		antMatchers("/createCaptcha","/patient/register", "/loginUser","/users/export","/doctor/adddoctor","/appointment/saveAppointment",
+				"/appointment/getAppointment/{byPatientEmail}","/appointment/downloadFile/{fileName:.+}","/hospital/addhospital")
 				.permitAll().antMatchers("/doctor/**").hasRole("DOCTOR")
 				.antMatchers("/patient/**").hasRole("PATIENT")
 				

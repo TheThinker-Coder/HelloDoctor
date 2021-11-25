@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import com.hellodoctor.constant.Constant;
 import com.hellodoctor.entities.Appointment;
 import com.hellodoctor.entities.Patient;
 import com.hellodoctor.entities.Users;
-import com.hellodoctor.exception.EmailException;
+import com.hellodoctor.exception.AlreadyUseException;
 import com.hellodoctor.exception.RecordNotFoundException;
 import com.hellodoctor.repository.AppointmentRepository;
 import com.hellodoctor.repository.PatientRepository;
@@ -45,7 +46,7 @@ public class PatientServicesImpl implements PatientService {
 		Patient existsPatient = patientRepository.findByPatientEmail(patientRequestDto.getPatientEmail());
 
 		if (!ObjectUtils.isEmpty(existsPatient)) {
-			throw new EmailException("try to anther Email");
+			throw new AlreadyUseException("try to anther Email");
 		}
 
 		Patient patient = new Patient();
@@ -225,6 +226,11 @@ public class PatientServicesImpl implements PatientService {
 	public void deletePatientById(Long patientId) {
 
 		log.info("start deletePatientById serviceImpl method");
+		
+		Optional<Patient> optional = patientRepository.findById(patientId);
+		if(ObjectUtils.isEmpty(optional)) {
+			throw new RecordNotFoundException("id not found "+patientId);
+		}
 		patientRepository.deleteById(patientId);
 	}
 
@@ -265,5 +271,11 @@ public class PatientServicesImpl implements PatientService {
 
 		log.info(" return getAppointmentByPatientEmail serviceImpl method ");
 		return appointmentResponceDto;
+	}
+
+	@Override
+	public List<Patient> listAll() {
+		
+		return patientRepository.findAll();
 	}
 }

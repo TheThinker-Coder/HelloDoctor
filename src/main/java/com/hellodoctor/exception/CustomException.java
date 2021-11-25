@@ -11,16 +11,16 @@ public class CustomException {
 	
 	@ExceptionHandler(EmptyInputException.class)
 	public ResponseEntity<Object> handleEmptyInputException(EmptyInputException e) {
-		ErrorMassege massege = new ErrorMassege("Empty fild is not allowed", e.getMessage(), HttpStatus.NOT_FOUND);
+		ErrorMassege massege = new ErrorMassege("Empty fild is not allowed", e.getMessage(), HttpStatus.BAD_REQUEST);
 //		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(massege);
 		return new ResponseEntity<Object>(massege, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(InvalidDataException.class)
 	public ResponseEntity<Object> handleInvalidDataException(InvalidDataException e) {
-		ErrorMassege massege = new ErrorMassege("Password dose not match", e.getMessage(), HttpStatus.NOT_FOUND);
+		ErrorMassege massege = new ErrorMassege("Bad Request", e.getMessage(), HttpStatus.BAD_REQUEST);
 //		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(massege);
-		return new ResponseEntity<Object>(massege, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Object>(massege, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(RecordNotFoundException.class)
@@ -32,20 +32,20 @@ public class CustomException {
 
 	@ExceptionHandler(NoSuchElementException.class)
 	public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException e) {
-		ErrorMassege massege = new ErrorMassege("Record not found", e.getMessage(), HttpStatus.BAD_REQUEST);
+		ErrorMassege massege = new ErrorMassege("Record not found", e.getMessage(), HttpStatus.NOT_FOUND);
 //		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(massege);
 		return new ResponseEntity<Object>(massege, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<Object> businessException(BusinessException e) {
-		ErrorMassege massege = new ErrorMassege("Record not found", e.getMessage(), HttpStatus.BAD_REQUEST);
+		ErrorMassege massege = new ErrorMassege("Record not found", e.getMessage(), HttpStatus.NOT_FOUND);
 		return new ResponseEntity<Object>(massege, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(ControllerException.class)
 	public ResponseEntity<Object> controllerException(ControllerException e) {
-		ErrorMassege massege = new ErrorMassege("Record not found", e.getMessage(), HttpStatus.BAD_REQUEST);
+		ErrorMassege massege = new ErrorMassege("Record not found", e.getMessage(), HttpStatus.NOT_FOUND);
 		return new ResponseEntity<Object>(massege, HttpStatus.NOT_FOUND);
 	}
 	
@@ -55,11 +55,31 @@ public class CustomException {
 		return new ResponseEntity<Object>(massege, HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(EmailException.class)
-	public ResponseEntity<Object> handleEmailException(EmailException e) {
-		ErrorMassege massege = new ErrorMassege("This Email has already exists", e.getMessage(), HttpStatus.NOT_FOUND);
+	@ExceptionHandler(AlreadyUseException.class)
+	public ResponseEntity<Object> handleEmailException(AlreadyUseException e) {
+		ErrorMassege massege = new ErrorMassege("Bad Request", e.getMessage(), HttpStatus.BAD_REQUEST);
 //		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(massege);
-		return new ResponseEntity<Object>(massege, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Object>(massege, HttpStatus.BAD_REQUEST);
 	}
-
+	@ExceptionHandler(CaptchaInvalidException.class)
+	public ResponseEntity<Object> handleCaptchaInvalidException(CaptchaInvalidException e) {
+		ErrorMassege massege = new ErrorMassege("this captcha is invalid", e.getMessage(), HttpStatus.BAD_REQUEST);
+//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(massege);
+		return new ResponseEntity<Object>(massege, HttpStatus.BAD_REQUEST);
+	}
+	
+	
+	@ExceptionHandler(MyFileNotFoundException.class)
+	public ResponseEntity<Object> handleMyFileNotFoundException(MyFileNotFoundException e) {
+		ErrorMassege massege = new ErrorMassege("not found ", e.getMessage(), HttpStatus.NOT_FOUND);
+//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(massege);
+		return new ResponseEntity<Object>(massege, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(PasswordException.class)
+	public ResponseEntity<Object> handlePasswordException(PasswordException e) {
+		ErrorMassege massege = new ErrorMassege("Bad Request ", e.getMessage(), HttpStatus.NOT_FOUND);
+//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(massege);
+		return new ResponseEntity<Object>(massege, HttpStatus.BAD_REQUEST);
+	}
 }

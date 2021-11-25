@@ -7,8 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import com.hellodoctor.entities.Captcha;
 import com.hellodoctor.entities.Users;
+import com.hellodoctor.exception.CaptchaInvalidException;
 import com.hellodoctor.exception.InvalidDataException;
+import com.hellodoctor.repository.CaptchaRepository;
 import com.hellodoctor.repository.UsersRepository;
 import com.hellodoctor.responsedto.JwtResponseDto;
 import com.hellodoctor.security.JwtUtil;
@@ -21,6 +24,9 @@ import lombok.extern.log4j.Log4j2;
 public class UsersServiceImpl implements UsersService {
 
 	@Autowired
+	private CaptchaRepository captchaRepository;
+	
+	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
 	
 	@Autowired
@@ -30,7 +36,14 @@ public class UsersServiceImpl implements UsersService {
 	private UsersRepository usersRepository;
 
 	@Override
-	public JwtResponseDto getByEmail(String email, String password) {
+	public JwtResponseDto getByEmail(String email, String password, Long captchaId) {
+		
+		Captcha captchaDetails = captchaRepository.findById(captchaId).orElse(null);
+		
+		if(ObjectUtils.isEmpty(captchaDetails)) {
+			throw new CaptchaInvalidException("captcha invalid");
+		}
+		captchaRepository.deleteById(captchaId);
 		
 		log.info("Start getByEmail");
 		Users user = usersRepository.findByEmail(email);

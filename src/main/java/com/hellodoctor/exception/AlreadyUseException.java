@@ -1,21 +1,20 @@
 package com.hellodoctor.exception;
 
-public class EmptyInputException extends RuntimeException {
+public class AlreadyUseException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public EmptyInputException() {
+	public AlreadyUseException() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public EmptyInputException(String message) {
+	public AlreadyUseException(String message) {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
 	
-
 }

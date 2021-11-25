@@ -5,9 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Date;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -19,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -26,13 +25,12 @@ import org.zalando.problem.ProblemModule;
 import org.zalando.problem.violations.ConstraintViolationProblemModule;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hellodoctor.entities.Appointment;
-import com.hellodoctor.requestdto.AppointmentRequestDto;
+import com.hellodoctor.entities.Doctor;
+import com.hellodoctor.requestdto.RequestDto;
 import com.hellodoctor.requestdto.UserRequestDto;
-import com.hellodoctor.responsedto.AppointmentResponceDto;
 import com.hellodoctor.responsedto.CaptchaResponse;
 import com.hellodoctor.responsedto.JwtResponseDto;
-import com.hellodoctor.services.AppointmentService;
+import com.hellodoctor.services.HelloDoctorServices;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,39 +38,43 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(OrderAnnotation.class)
-public class AppointmentControllerTestCase {
+public class DoctorControllerTestCase {
 
 	@Autowired
 	private MockMvc mockMvc;
 
 	@MockBean
-	private AppointmentService appointmentService;
+	private HelloDoctorServices doctorService;
 
-	private static String BEARERTOKEN = "Bearer ";
-	private static Long captchaId;
 	@Autowired
 	private ObjectMapper mapper;
 
-	AppointmentRequestDto requestDto = new AppointmentRequestDto();
-	Appointment appointment = new Appointment();
-	AppointmentResponceDto responceDto = new AppointmentResponceDto();
-
+	RequestDto requestDto = new RequestDto();
+	Doctor doctor = new Doctor();
 	UserRequestDto userRequestDto = new UserRequestDto();
 	JwtResponseDto jwtResponseDto = new JwtResponseDto();
+	private static String BEARER_TOKEN = "Bearer ";
+	private static Long captchaId;
 
 	@BeforeEach
-	public void setUp() {
-		requestDto.setPatientEmail("rahul@gmail.com");
-		requestDto.setDoctorEmail("hemantjain@gmail.com");
-		requestDto.setAppointmentDate("01/12/2021");
-		requestDto.setTime("03:00AM");
-		requestDto.setFileAttech("report");
+	public void setup() {
 
-		userRequestDto.setEmail("rahul@gmail.com");
+		userRequestDto.setEmail("hemantjain@gmail.com");
 		userRequestDto.setPassword("123456");
+
+		requestDto.setDoctorId(1l);
+		requestDto.setDoctorName("Hemant Jain");
+		requestDto.setDoctorEmail("hemantjain@gmail.com");
+		requestDto.setDoctorMobileNumber(2103546987l);
+		requestDto.setDoctorGender("female");
+		requestDto.setRegisterDate(new Date());
+		requestDto.setDoctorSpecilzation("Surgeon");
+		requestDto.setHospitalName("lifecare");
+		requestDto.setRole("ROLE_DOCTORE");
 
 		mapper.registerModule(new ProblemModule());
 		mapper.registerModule(new ConstraintViolationProblemModule());
+
 	}
 	
 	@Test
@@ -93,41 +95,45 @@ public class AppointmentControllerTestCase {
 	@Test
 	@Order(2)
 	public void testLogin() throws Exception {
-		log.info("Login method for calling");
+		log.info("login test case start");
 		userRequestDto.setCaptchaId(captchaId);
 		MvcResult result = mockMvc.perform(post("/loginUser").contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(userRequestDto))).andExpect(status().isOk()).andReturn();
 		String response = result.getResponse().getContentAsString();
 
-		JwtResponseDto dto = mapper.readValue(response, JwtResponseDto.class);
-		BEARERTOKEN = BEARERTOKEN + dto.getJwtToken();
-		System.out.print("tokenLogin " + BEARERTOKEN);
-	}
+		System.out.println("response " + response);
 
-//	@Test
-//	@Order(2)
-//	public void testSaveAppointment() throws Exception {
-//
-//		BeanUtils.copyProperties(requestDto, appointment);
-//		BeanUtils.copyProperties(appointment, responceDto);
-//
-//		when(appointmentService.saveAppointment(requestDto)).thenReturn(responceDto);
-//		mockMvc.perform(post("/appointment/saveAppointment").contentType(MediaType.APPLICATION_JSON)
-//				.content(mapper.writeValueAsString(responceDto))).andExpect(status().isOk());
-//	}
+		JwtResponseDto dto = mapper.readValue(response, JwtResponseDto.class);
+		System.out.println("-------------------------------------------------");
+		System.out.println("JWT token " + dto.getJwtToken());
+		System.out.println("--------------------------------------------------");
+		BEARER_TOKEN = BEARER_TOKEN + dto.getJwtToken();
+		log.info("login tast case end");
+	}
 
 	@Test
 	@Order(3)
-	public void testGetAppointment() throws Exception {
+	public void testSaveDoctor() throws Exception {
+		log.info("save doctor test case start");
+		BeanUtils.copyProperties(requestDto, doctor);
 
-		BeanUtils.copyProperties(requestDto, appointment);
-		BeanUtils.copyProperties(appointment, responceDto);
+		when(doctorService.addDoctor(requestDto)).thenReturn(doctor);
+		mockMvc.perform(post("/doctor/adddoctor").contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(requestDto))).andExpect(status().isOk());
+		log.info("save doctor test case end ");
+	}
 
-		List<AppointmentResponceDto> list = Stream.of(responceDto).collect(Collectors.toList());
-		System.out.println(list);
-		when(appointmentService.getAppointmentByPatientEmail(requestDto.getPatientEmail())).thenReturn(list);
-		mockMvc.perform(get("/appointment/getAppointment/{byPatientEmail}", requestDto.getPatientEmail()))
+	@Test
+	@Order(4)
+	public void testGetByDoctorId() throws Exception {
+		log.info("get doctor by doctor id test case start");
+		BeanUtils.copyProperties(requestDto, doctor);
+
+		when(doctorService.getDoctorById(1l)).thenReturn(doctor);
+		mockMvc.perform(get("/doctor/{doctorId}", requestDto.getDoctorId())
+				.header(HttpHeaders.AUTHORIZATION, BEARER_TOKEN).content(mapper.writeValueAsString(requestDto)))
 				.andExpect(status().isOk());
+		log.info("get doctor by doctor id test case end");
 	}
 
 }

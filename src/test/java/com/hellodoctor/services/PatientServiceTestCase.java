@@ -111,21 +111,16 @@ public class PatientServiceTestCase {
 //
 //	}
 
-	@Test
-	public void testDeletePatient() {
-
-		Patient patient = new Patient();
-		BeanUtils.copyProperties(patientRequestDto, patient);
-		patient.setRole("ROLE_PATIENT");
-
-		when(patientRepository.save(patient)).thenReturn(patient);
-
-		patientService.deletePatientById(1l);
-		verify(patientRepository, times(1)).deleteById(1l);
-	}
-
-	@Test
-	public void testGetPatientByPatientEmail() {
-
-	}
+//	@Test
+//	public void testDeletePatient() {
+//
+//		Patient patient = new Patient();
+//		BeanUtils.copyProperties(patientRequestDto, patient);
+//		patient.setRole("ROLE_PATIENT");
+//
+//		when(patientRepository.save(patient)).thenReturn(patient);
+//
+//		patientService.deletePatientById(1l);
+//		verify(patientRepository, times(1)).deleteById(1l);
+//	}
 }
