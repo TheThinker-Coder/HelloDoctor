@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PatientRequestDto {
 	
+	private Long  patientId;
 	private String patientName;
 	private String patientEmail;
 	private String patientPassword;
 	private Long patientMobileNumber;
 	private Date registerDate;
 	private Date updateDate;
-
 }

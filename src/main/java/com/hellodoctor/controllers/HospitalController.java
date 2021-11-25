@@ -29,39 +29,28 @@ public class HospitalController {
 	// add hospital start
 	@PostMapping("/addhospital")
 	public ResponseEntity<?> addHospital(@RequestBody RequestDto requestDto) {
-		try {
 			log.info("inside hosptial controller");
 			this.helloDoctorServices.addHospital(requestDto);
 			return new ResponseEntity<RequestDto>(requestDto, HttpStatus.OK);
-		} catch (BusinessException e) {
-			log.info("InsideEmployeePostCatchBusinessBlock");
-			log.trace("ControllerExceptionStarted");
-			ControllerException ce = new ControllerException();
-			log.error("ControllerExceptionError");
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			log.info("InsideEmployeePostExceptionBlock");
-			log.info("ExceptionStarted");
-			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
-			log.error("ControllerExceptionError");
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
 		}
-	}
 	// add hospital end
 	// get hospital by id
 	@GetMapping("/{hospitalId}")
 	public ResponseEntity<?> getHospitagetHospitalById(@PathVariable("hospitalId") Long hospitalId) {
 		log.info("inside hosptialbyid controller");
-		try {
-			HospitalsDetails hospitalsDetails = helloDoctorServices.getHospitalById(hospitalId);
-			return new ResponseEntity<HospitalsDetails>(hospitalsDetails, HttpStatus.OK);
-		} catch (BusinessException e) {
-			ControllerException ce = new ControllerException();
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		}
+		HospitalsDetails hospitalsDetails = helloDoctorServices.getHospitalById(hospitalId);
+		return new ResponseEntity<HospitalsDetails>(hospitalsDetails, HttpStatus.OK);
+		
+//		try {
+//			HospitalsDetails hospitalsDetails = helloDoctorServices.getHospitalById(hospitalId);
+//			return new ResponseEntity<HospitalsDetails>(hospitalsDetails, HttpStatus.OK);
+//		} catch (BusinessException e) {
+//			ControllerException ce = new ControllerException();
+//			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
+//		} catch (Exception e) {
+//			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
+//			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
+//		}
 	}
 	// get hospital by id end
 
@@ -87,16 +76,8 @@ public class HospitalController {
 	@GetMapping("/hosptailname/{hospitalName}")
 	public ResponseEntity<?>findByhospitalName(@PathVariable("hospitalName") String hospitalName){
 		log.info("inside hospital controller at findby name hospital");
-		try {
-			List<HospitalsDetails>hospitalsDetailsByName = helloDoctorServices.findByhospitalName(hospitalName);
-			return new ResponseEntity<List<HospitalsDetails>>(hospitalsDetailsByName,HttpStatus.OK);
-		} catch (BusinessException e) {
-			ControllerException ce = new ControllerException();
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		}
+			HospitalsDetails hospitalsDetailsByName = helloDoctorServices.findByhospitalName(hospitalName);
+			return new ResponseEntity<HospitalsDetails>(hospitalsDetailsByName,HttpStatus.OK);
 		
 	}
 }

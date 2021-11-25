@@ -5,11 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class JwtResponseDto {
-	
-	private String jwtToken;
-	private String role;
+@AllArgsConstructor
+public class CaptchaResponse {
 
+	private Long captchaId;
+	private String captcha;
 }
+

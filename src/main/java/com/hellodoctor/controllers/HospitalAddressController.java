@@ -26,16 +26,8 @@ public class HospitalAddressController {
 	@GetMapping("/{addressId}")
 	public  ResponseEntity<?> getHospitalAddressById(@PathVariable("addressId") Long addressId) {
 		log.info("inside hosptialaddressbyid controller");
-		try{
 			HospitalAddress hospitalAddress = helloDoctorServices.getHospitalAddressById(addressId);
 			return new ResponseEntity<HospitalAddress>(hospitalAddress, HttpStatus.OK);
-		} catch (BusinessException e) {
-			ControllerException ce = new ControllerException();
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		}
 	}
 	// get address by id end 
 

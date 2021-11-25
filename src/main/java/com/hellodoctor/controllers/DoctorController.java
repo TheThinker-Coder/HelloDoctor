@@ -51,23 +51,9 @@ public class DoctorController {
 	@PutMapping("/updateDoctor/{doctorEmail}")
 	public ResponseEntity<?> updateDoctor(@RequestBody DoctorUpdateDto doctorUpdateDto,
 			@PathVariable("doctorEmail") String doctorEmail) {
-		try {
 			log.info("inside doctorUpdate Controller");
 			this.helloDoctorServices.updateDoctor(doctorUpdateDto, doctorEmail);
 			return new ResponseEntity<DoctorUpdateDto>(doctorUpdateDto, HttpStatus.OK);
-		} catch (BusinessException e) {
-			log.trace("InsideEmployeePostCatchBusinessBlock");
-			log.trace("ControllerExceptionStarted");
-			ControllerException ce = new ControllerException();
-			log.error("ControllerExceptionError");
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			log.trace("InsideEmployeePostExceptionBlock");
-			log.trace("ExceptionStarted");
-			ControllerException ce = new ControllerException(e.getMessage());
-			log.error("ControllerExceptionError");
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		}
 	}
 	// doctorUpdateControllerEnd
 
@@ -76,16 +62,19 @@ public class DoctorController {
 	@GetMapping("/{doctorId}")
 	public ResponseEntity<?> getDoctorById(@PathVariable("doctorId") Long getDoctorById) {
 		log.info("inside doctor by id controller");
-		try {
-			Doctor doctorById = helloDoctorServices.getDoctorById(getDoctorById);
-			return new ResponseEntity<Doctor>(doctorById, HttpStatus.OK);
-		} catch (BusinessException e) {
-			ControllerException ce = new ControllerException();
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		}
+		Doctor doctor = helloDoctorServices.getDoctorById(getDoctorById);
+		return new ResponseEntity<Doctor>(doctor, HttpStatus.OK);
+		
+//		try {
+//			Doctor doctorById = helloDoctorServices.getDoctorById(getDoctorById);
+//			return new ResponseEntity<Doctor>(doctorById, HttpStatus.OK);
+//		} catch (BusinessException e) {
+//			ControllerException ce = new ControllerException();
+//			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
+//		} catch (Exception e) {
+//			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
+//			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
+//		}
 	}
 
 	// get doctor by id end
@@ -93,16 +82,8 @@ public class DoctorController {
 	@GetMapping("/doctoremail/{doctorEmail}")
 	public ResponseEntity<?> findBydoctorEmail(@PathVariable("doctorEmail") String doctorEmail) {
 		log.info("inside doctorby email controller");
-		try {
-			Doctor doctorByEmail = helloDoctorServices.findBydoctorEmail(doctorEmail);
-			return new ResponseEntity<Doctor>(doctorByEmail, HttpStatus.OK);
-		} catch (BusinessException e) {
-			ControllerException ce = new ControllerException();
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		}
+			Doctor doctor = helloDoctorServices.findBydoctorEmail(doctorEmail);
+			return new ResponseEntity<Doctor>(doctor, HttpStatus.OK);
 
 	}
 
@@ -110,17 +91,21 @@ public class DoctorController {
 	// get all doctor
 	@GetMapping("/alldoctor")
 	public ResponseEntity<?> getAllDoctor() {
-		try {
-			List<Doctor> listofAllDoctor = helloDoctorServices.getAllDoctor();
-			return new ResponseEntity<List<Doctor>>(listofAllDoctor, HttpStatus.OK);
-		} catch (BusinessException e) {
-
-			ControllerException ce = new ControllerException();
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		}
+		
+		List<Doctor> listofAllDoctor = helloDoctorServices.getAllDoctor();
+		return new ResponseEntity<List<Doctor>>(listofAllDoctor, HttpStatus.OK);
+		
+//		try {
+//			List<Doctor> listofAllDoctor = helloDoctorServices.getAllDoctor();
+//			return new ResponseEntity<List<Doctor>>(listofAllDoctor, HttpStatus.OK);
+//		} catch (BusinessException e) {
+//
+//			ControllerException ce = new ControllerException();
+//			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
+//		} catch (Exception e) {
+//			ControllerException ce = new ControllerException(Constant.EXCEPTION613 + e.getMessage());
+//			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
+//		}
 
 	}
 
@@ -128,18 +113,8 @@ public class DoctorController {
 	// delete by DoctorById
 	@DeleteMapping("/deletedoctorById/{doctorId}")
 	public ResponseEntity<?> deletedoctorById(@PathVariable("doctorId") Long doctorId) {
-		try {
 			this.helloDoctorServices.deletedoctorById(doctorId);
 			return new ResponseEntity<>(Constant.DOCTORDELETE, HttpStatus.OK);
-		} catch (BusinessException e) {
-			// TODO: handle exception
-			ControllerException ce = new ControllerException();
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			// TODO: handle exception
-			ControllerException ce = new ControllerException(Constant.EXCEPTION613);
-			return new ResponseEntity<ControllerException>(ce, HttpStatus.BAD_REQUEST);
-		}
 
 	}
 //	get all doctor appointment

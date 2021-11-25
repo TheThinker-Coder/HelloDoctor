@@ -1,6 +1,8 @@
 package com.hellodoctor.services;
 
 import java.util.List;
+
+import com.hellodoctor.entities.Patient;
 import com.hellodoctor.requestdto.PatientRequestDto;
 import com.hellodoctor.responsedto.AppointmentResponceDto;
 import com.hellodoctor.responsedto.PatientResponseDto;
@@ -20,4 +22,6 @@ public interface PatientService {
 	public PatientResponseDto getPatientByPatientEmail(String patientEmail);
 	
 	public List<AppointmentResponceDto> getAppointment(String email);
+
+	public List<Patient> listAll();
 }

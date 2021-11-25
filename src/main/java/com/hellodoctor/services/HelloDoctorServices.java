@@ -24,7 +24,7 @@ public interface HelloDoctorServices {
 
 	public Doctor findBydoctorEmail(String doctorEmail);
 
-	public List<HospitalsDetails> findByhospitalName(String hospitalName);
+	public HospitalsDetails findByhospitalName(String hospitalName);
 
 	public HospitalAddress getHospitalAddressById(Long addressId);
 

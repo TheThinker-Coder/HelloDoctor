@@ -11,4 +11,5 @@ public class UserRequestDto {
 
 	private String email;
 	private String password;
+	private Long captchaId;
 }

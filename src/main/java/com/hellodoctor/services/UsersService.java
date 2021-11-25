@@ -4,7 +4,7 @@ import com.hellodoctor.responsedto.JwtResponseDto;
 
 public interface UsersService {
 
-	JwtResponseDto getByEmail(String userEmail, String password);
+	JwtResponseDto getByEmail(String userEmail, String password, Long captchaId);
 	
 	
 

@@ -1,21 +1,22 @@
 package com.hellodoctor.exception;
 
-public class EmptyInputException extends RuntimeException {
+public class PasswordException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public EmptyInputException() {
+	public PasswordException() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public EmptyInputException(String message) {
+	public PasswordException(String message) {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
+	
 	
 
 }
